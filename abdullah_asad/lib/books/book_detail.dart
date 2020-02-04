@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
-import 'dart:io' as io;
+import 'package:abdullah_asad/Helper/util.dart';
 
 class BookDetail extends StatefulWidget {
   final DocumentSnapshot post;
@@ -21,7 +21,7 @@ class _BookDetailState extends State<BookDetail> {
 
   String pathPDF = "";
   String corruptedPathPDF = "";
-
+  GlobalKey key = GlobalKey();
   @override
   void initState(){
     super.initState();
@@ -37,7 +37,7 @@ class _BookDetailState extends State<BookDetail> {
 //      });
 //    });
 
-    createFileOfPdfUrl().then((f) {
+    createFileOfPdfUrl(widget.post.data["pdfURL"], ).then((f) {
       setState(() {
         pathPDF = f.path;
         GlobalKey key = GlobalKey();
@@ -45,33 +45,13 @@ class _BookDetailState extends State<BookDetail> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  PDFScreen(path: pathPDF, title: widget.post.data["name"], key: key,)),
+                  PDFScreen(path: pathPDF, title: widget.post.data["name"], current_page: 10, key: key,)),
         );
       });
     });
   }
 
-  Future<File> createFileOfPdfUrl() async {
-    final url = widget.post.data["pdfURL"];
-    final filename = url.substring(url.lastIndexOf("/") + 1);
-    String dir = (await getApplicationDocumentsDirectory()).path;
 
-    File file;
-    if(io.File(await '$dir/$filename').existsSync() == true){
-      file = io.File(await '$dir/$filename');
-      print("File Found **************");
-    }else{
-      var request = await HttpClient().getUrl(Uri.parse(url));
-      var response = await request.close();
-      var bytes = await consolidateHttpClientResponseBytes(response);
-
-      file = new File('$dir/$filename');
-      await file.writeAsBytes(bytes);
-      print("File Download **************");
-    }
-
-    return file;
-  }
 
   Future<File> fromAsset(String asset, String filename) async {
     // To open from assets, you can copy them to the app storage folder, and the access them "locally"
@@ -116,7 +96,7 @@ class _BookDetailState extends State<BookDetail> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  PDFScreen(path: pathPDF)),
+                                  PDFScreen(path: pathPDF, title: widget.post.data["name"],current_page: 6, key: key,)),
                         );
                       }
                     }),

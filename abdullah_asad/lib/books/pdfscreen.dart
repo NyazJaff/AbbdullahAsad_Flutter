@@ -4,6 +4,7 @@ import 'package:abdullah_asad/Helper/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:abdullah_asad/books/bookmarks_and_comments.dart';
 
 class PDFScreen extends StatefulWidget {
   final String path;
@@ -32,22 +33,25 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this); //used for keyboard detection
   }
 
 
   @override
   void didChangeMetrics() {
-    final value = MediaQuery.of(context).viewInsets.bottom;
-    if (value > 0) {
-      if (isKeyboardOpen) {
-        _onKeyboardChanged(false);
+    if(utilIsAndroid(context)){
+      final value = MediaQuery.of(context).viewInsets.bottom;
+      if (value > 0) {
+        if (isKeyboardOpen) {
+          _onKeyboardChanged(false);
+        }
+        isKeyboardOpen = false;
+      } else {
+        isKeyboardOpen = true;
+//        _onKeyboardChanged(true);
       }
-      isKeyboardOpen = false;
-    } else {
-      isKeyboardOpen = true;
-      _onKeyboardChanged(true);
     }
+
   }
 
   _onKeyboardChanged(bool isVisible) {
@@ -79,7 +83,9 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                         pages = _pages;
                         isReady = true;
                       });
-                      _pdfViewController.setPage(widget.current_page);
+                      if(utilIsAndroid(context)){
+                        _pdfViewController.setPage(widget.current_page);
+                      }
                     },
                     onError: (error) {
                       setState(() {
@@ -105,7 +111,6 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
               )
             ],
           )
-
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -117,40 +122,10 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 IconButton(icon: Icon(Icons.share), onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: TextFormField(),
-                                ),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: RaisedButton(
-                                    child: Text("Submitß"),
-                                    onPressed: () {
-                                      if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
-                                      }
-                                    },
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      });
                 }),
                 IconButton(icon: pageBookmarked ? Icon(Icons.bookmark) :Icon(Icons.bookmark_border) , onPressed: () {
                   setState(() {
-                  pageBookmarked = !pageBookmarked;
+                    pageBookmarked = !pageBookmarked;
                   });
 
                   Scaffold.of(cntx).showSnackBar(SnackBar(
@@ -158,12 +133,41 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                     duration: Duration(seconds: 1),
                   ));
 
-                  },),//bookmark
+                },),//bookmark
                 IconButton(icon: Icon(Icons.add_comment, color: Colors.black), onPressed: () { commentPopup(cntx);},),
                 IconButton(icon: Icon(Icons.view_list), onPressed: () {
+
+//                  showGeneralDialog(
+//                      barrierColor: Colors.black.withOpacity(0.5),
+//                      transitionBuilder: (context, a1, a2, widget) {
+//                        return Transform.scale(
+//                          scale: a1.value,
+//                          child: Opacity(
+//                              opacity: a1.value,
+//                              child: BookMarksAndComments(
+//                                title:  "nnn",
+//                                pdfViewController: _pdfViewController,
+//
+//                              )
+//                          ),
+//                        );
+//                      },
+//                      transitionDuration: Duration(milliseconds: 250),
+//                      barrierDismissible: true,
+//                      barrierLabel: '',
+//                      context: context,
+//                      pageBuilder: (context, animation1, animation2) {});
+
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return
+                          BookMarksAndComments(
+                            title:  widget.title,
+                            pdfViewController: _pdfViewController,
+                          );
+                      });
                 },),
-
-
               ],
             ),
           )
@@ -213,7 +217,12 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                         children: <Widget>[
                           Text(
                             "Add comment to this page",
-                            style: TextStyle(fontSize: 15.0),
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color: UtilColours.APP_BAR,
+                                fontFamily: "Tajawal",
+                                fontStyle: FontStyle.normal
+                            ),
                           ),
                         ],
                       ),
@@ -229,39 +238,42 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                         child: TextField(
                           controller: myController,
                           decoration: InputDecoration(
-                            hintText: "Please add your comment here!",
+                            hintText: "كان بشرية الأمريكي ٣٠, به،",
                             border: InputBorder.none,
                           ),
                           maxLines: 8,
                         ),
                       ),
                       InkWell(
-                          child: Container(
-                            padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                            decoration: BoxDecoration(
-                              color: UtilColours.SAVE_BUTTON,
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20.0),
-                                  bottomRight: Radius.circular(20.0)),
-                            ),
-                            child: Text(
-                              "Save",
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
+                        child: Container(
+                          padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                          decoration: BoxDecoration(
+                            color: UtilColours.SAVE_BUTTON,
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20.0),
+                                bottomRight: Radius.circular(20.0)),
                           ),
-                          onTap: () async {
-
-                            if(myController.text != "" ){
-                              Scaffold.of(ctx).showSnackBar(SnackBar(
-                                content: Text('Saved! ' + myController.text),
-                                duration: Duration(seconds: 2),
-                              ));
-                              await Future.delayed(const Duration(seconds: 2), (){});
-                            }
-                            Navigator.pop(context, myController.text);
-                          },
+                          child: Text(
+                            "Save",
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
+                        onTap: () async {
+
+                          if(myController.text != "" ){
+                            Scaffold.of(ctx).showSnackBar(SnackBar(
+                              content: Text('Saved! ' + myController.text),
+                              duration: Duration(seconds: 2),
+                            ));
+
+                          }
+                          await Future.delayed(const Duration(seconds: 2), (){
+                            Navigator.of(context, rootNavigator: true).pop(myController.text);
+                          });
+
+                        },
+                      ),
 
                     ],
                   ),
