@@ -1,12 +1,15 @@
+import 'package:abdullah_asad/live_broadcast.dart';
+import 'package:abdullah_asad/question_and_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:abdullah_asad/home.dart';
 import 'package:abdullah_asad/books/list_books.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
 
-import 'package:flutter_cupertino_localizations/flutter_cupertino_localizations.dart';
-
-void main() => runApp(MyApp());
+void main() async {
+//
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -19,8 +22,10 @@ class MyApp extends StatelessWidget {
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) => MyHomePage(),
-        '/second': (context) => ListBooks(),
+        '/books': (context) => ListBooks(),
         '/pdfScreen': (context) => PDFScreen(),
+        '/q&a': (context) => QuestionAndAnswer(),
+        '/live_broadcast': (context) => LiveBroadcast(),
       },
 
       //Localization

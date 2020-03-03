@@ -1,17 +1,21 @@
 import 'dart:async';
 
+import 'package:abdullah_asad/Helper/db_helper.dart';
 import 'package:abdullah_asad/Helper/util.dart';
+import 'package:abdullah_asad/models/comments_and_bookmarks_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:abdullah_asad/books/bookmarks_and_comments.dart';
+import 'package:abdullah_asad/layout_helper.dart';
 
 class PDFScreen extends StatefulWidget {
   final String path;
   final String title;
-  int current_page;
+  final int bookId;
+  int currentPage;
 
-  PDFScreen({Key key, this.path, this.title, this.current_page}) : super(key: key);
+  PDFScreen({Key key, this.path, this.title, this.currentPage, this.bookId}) : super(key: key);
 
   _PDFScreenState createState() => _PDFScreenState();
 }
@@ -25,6 +29,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
 
   bool pageBookmarked  = false;
   PDFViewController _pdfViewController;
+  var db = new DatabaseHelper();
 
   final _formKey = GlobalKey<FormState>();
   var isKeyboardOpen = false;
@@ -84,7 +89,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                         isReady = true;
                       });
                       if(utilIsAndroid(context)){
-                        _pdfViewController.setPage(widget.current_page);
+                        _pdfViewController.setPage(widget.currentPage);
                       }
                     },
                     onError: (error) {
@@ -103,9 +108,10 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                       _controller.complete(pdfViewController);
                       _pdfViewController = pdfViewController;
                     },
-                    onPageChanged: (int page, int total) {
-                      setState(() => this.pageBookmarked = !pageBookmarked);
-                      print('page change: $page/$total');
+                    onPageChanged: (int page, int total) async {
+                      db.checkIfPageMarkedBookmark(widget.bookId, await _pdfViewController.getCurrentPage()).then((value) {
+                        setState(() => this.pageBookmarked = value);
+                      });
                     },
                   )
               )
@@ -123,7 +129,18 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
               children: <Widget>[
                 IconButton(icon: Icon(Icons.share), onPressed: () {
                 }),
-                IconButton(icon: pageBookmarked ? Icon(Icons.bookmark) :Icon(Icons.bookmark_border) , onPressed: () {
+                IconButton(icon: pageBookmarked ? Icon(Icons.bookmark) :Icon(Icons.bookmark_border) , onPressed: () async{
+                  if(!pageBookmarked){
+                    db.saveCommentOrBookmark(new CommentAndBookmark(
+                        bookId: widget.bookId,
+                        pageIndex: await _pdfViewController.getCurrentPage(),
+                        type: DatabaseHelper.BOOKMARK));
+                  }else{
+                    db.deleteCommentOrBookmark(
+                        widget.bookId,
+                        await _pdfViewController.getCurrentPage(),
+                        DatabaseHelper.BOOKMARK);
+                  }
                   setState(() {
                     pageBookmarked = !pageBookmarked;
                   });
@@ -162,9 +179,10 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                       context: context,
                       builder: (BuildContext context) {
                         return
-                          BookMarksAndComments(
+                          BookmarksAndComments(
                             title:  widget.title,
                             pdfViewController: _pdfViewController,
+                            bookId: widget.bookId
                           );
                       });
                 },),
@@ -190,12 +208,12 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              PDFScreen(path: widget.path, title: widget.title, current_page: current_page_param, key: key,)),
+              PDFScreen(path: widget.path, title: widget.title, currentPage: current_page_param, key: key,)),
     );
   }
 
   commentPopup(ctx) {
-    final myController = TextEditingController();
+    final commentTxt = TextEditingController();
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -215,15 +233,13 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Text(
-                            "Add comment to this page",
-                            style: TextStyle(
-                                fontSize: 20.0,
-                                color: UtilColours.APP_BAR,
-                                fontFamily: "Tajawal",
-                                fontStyle: FontStyle.normal
+                          Expanded(
+                            child: Text(
+                              "Add comment to this page أضف تعليقك",
+                              style:arabicTxtStyle(),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -236,10 +252,11 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                       Padding(
                         padding: EdgeInsets.only(left: 30.0, right: 30.0),
                         child: TextField(
-                          controller: myController,
+                          controller: commentTxt,
                           decoration: InputDecoration(
                             hintText: "كان بشرية الأمريكي ٣٠, به،",
                             border: InputBorder.none,
+
                           ),
                           maxLines: 8,
                         ),
@@ -254,22 +271,27 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                                 bottomRight: Radius.circular(20.0)),
                           ),
                           child: Text(
-                            "Save",
-                            style: TextStyle(color: Colors.white),
+                            "Save حفظ",
+                            style: arabicTxtStyle(paramColour: Colors.white),
                             textAlign: TextAlign.center,
                           ),
                         ),
                         onTap: () async {
 
-                          if(myController.text != "" ){
+                          if(commentTxt.text != "" ){
+                            db.saveCommentOrBookmark(new CommentAndBookmark(
+                                bookId: widget.bookId,
+                                pageIndex: await _pdfViewController.getCurrentPage(),
+                                comment: commentTxt.text,
+                                type: DatabaseHelper.COMMENT));
+
                             Scaffold.of(ctx).showSnackBar(SnackBar(
-                              content: Text('Saved! ' + myController.text),
+                              content: Text('Saved! ' + commentTxt.text),
                               duration: Duration(seconds: 2),
                             ));
-
                           }
                           await Future.delayed(const Duration(seconds: 2), (){
-                            Navigator.of(context, rootNavigator: true).pop(myController.text);
+                            Navigator.of(context, rootNavigator: true).pop(commentTxt.text);
                           });
 
                         },

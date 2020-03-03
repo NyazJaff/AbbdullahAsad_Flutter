@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:abdullah_asad/home.dart';
 import 'package:abdullah_asad/books/list_books.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,11 +43,6 @@ class Category {
   final String name;
   final IconData icon;
 }
-
-const List<Category> categories = <Category> [
-  Category(name: "Comments", icon: Icons.comment),
-  Category(name: "Bookmarks", icon: Icons.bookmark)
-];
 
 class MrTabs extends StatelessWidget{
   @override
@@ -123,7 +117,6 @@ class _HomeTopTabsState extends State<HomeTopTabs> with SingleTickerProviderStat
   TabController _tabController;
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.display1;
     return DefaultTabController (
       length: 2,
       child: Scaffold(

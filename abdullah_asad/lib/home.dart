@@ -1,8 +1,9 @@
+import 'package:abdullah_asad/layout_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:abdullah_asad/Helper/util.dart';
-
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'Helper/db_helper.dart';
+import 'models/book_model.dart';
 
 class MyHomePage extends StatefulWidget {
 //  MyHomePage({Key key, this.title}) : super(key: key);
@@ -12,7 +13,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+  var db = new DatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Stack (
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/brand/bg_tran.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          appBgImage(),
           Container(
             child: SingleChildScrollView(
               child: Column(
@@ -97,8 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 iconSize: 37,
                                                 color: UtilColours.PRIMARY_BROWN,
                                                 onPressed: () {
-                                                  Navigator.pushNamed(context, '/second');
-                                                  print("pressed");
+                                                  Navigator.pushNamed(context, '/books');
                                                 },
                                               )
                                           )
@@ -110,8 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               icon:  Icon(FontAwesomeIcons.solidUser),
                                               iconSize: 37,
                                               color: UtilColours.PRIMARY_BROWN,
-                                              onPressed: () {
-                                                print("pressed");
+                                              onPressed: () async {
                                               },
                                             )
                                         ),
@@ -150,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               iconSize: 37,
                                               color: UtilColours.PRIMARY_BROWN,
                                               onPressed: () {
-                                                print("pressed");
+                                                Navigator.pushNamed(context, '/live_broadcast');
                                               },
                                             )
                                         ),
@@ -164,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 iconSize: 37,
                                 color: UtilColours.PRIMARY_BROWN,
                                 onPressed: () {
-                                  print("pressed");
+                                  Navigator.pushNamed(context, '/q&a');
                                 },
                               )
                           )

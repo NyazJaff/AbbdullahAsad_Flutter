@@ -37,7 +37,7 @@ class _BookDetailState extends State<BookDetail> {
 //      });
 //    });
 
-    createFileOfPdfUrl(widget.post.data["pdfURL"], ).then((f) {
+    createFileOfUrl(widget.post.data["pdfURL"], ).then((f) {
       setState(() {
         pathPDF = f.path;
         GlobalKey key = GlobalKey();
@@ -45,7 +45,7 @@ class _BookDetailState extends State<BookDetail> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  PDFScreen(path: pathPDF, title: widget.post.data["name"], current_page: 10, key: key,)),
+                  PDFScreen(path: pathPDF, title: widget.post.data["name"], currentPage: 10, key: key,)),
         );
       });
     });
@@ -96,7 +96,7 @@ class _BookDetailState extends State<BookDetail> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  PDFScreen(path: pathPDF, title: widget.post.data["name"],current_page: 6, key: key,)),
+                                  PDFScreen(path: pathPDF, title: widget.post.data["name"],currentPage: 6, key: key,)),
                         );
                       }
                     }),
