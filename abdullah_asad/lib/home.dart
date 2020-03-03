@@ -1,4 +1,5 @@
 import 'package:abdullah_asad/layout_helper.dart';
+import 'package:abdullah_asad/question_and_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:abdullah_asad/Helper/util.dart';
@@ -156,7 +157,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 iconSize: 37,
                                 color: UtilColours.PRIMARY_BROWN,
                                 onPressed: () {
-                                  Navigator.pushNamed(context, '/q&a');
+                                  GlobalKey key = GlobalKey();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            QuestionAndAnswer(title: "test", parentId: 0, key: key,)),
+                                  );
                                 },
                               )
                           )

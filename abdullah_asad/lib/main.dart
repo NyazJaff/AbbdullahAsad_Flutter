@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => MyHomePage(),
         '/books': (context) => ListBooks(),
         '/pdfScreen': (context) => PDFScreen(),
-        '/q&a': (context) => QuestionAndAnswer(),
+//        '/q&a': (context) => QuestionAndAnswer("Q&a", 0),
         '/live_broadcast': (context) => LiveBroadcast(),
       },
 
