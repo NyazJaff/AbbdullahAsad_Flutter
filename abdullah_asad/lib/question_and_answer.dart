@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:abdullah_asad/Helper/util.dart';
+import 'package:abdullah_asad/models/epic.dart';
+import 'package:abdullah_asad/mp3_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/layout_helper.dart';
@@ -8,8 +10,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'Helper/db_helper.dart';
 
 
-class QuestionAndAnswer extends StatefulWidget {
-  QuestionAndAnswer({
+class QandA extends StatefulWidget {
+  QandA({
     Key key,
     this.title,
     this.parentId,
@@ -19,41 +21,57 @@ class QuestionAndAnswer extends StatefulWidget {
   final String title;
   final int parentId;
   @override
-  _QuestionAndAnswerState createState() => _QuestionAndAnswerState();
+  _QandAState createState() => _QandAState();
 }
 
-class _QuestionAndAnswerState extends State<QuestionAndAnswer> {
+class _QandAState extends State<QandA> {
   var db = new DatabaseHelper();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+//    db.deleteEpic().then((value) {setState(() {});});
     pullQandA();
+//    migrateSpeeches();
   }
 
-  pullQandA() async{
-      int largestId = await db.largestBookId();
+  pullQandA() async {
+      int largestId = await db.largestEpicFirebaseId(DatabaseHelper.QUESTION_AND_ANSWER);
       bool foundRecord = false;
       QuerySnapshot document = await Firestore.instance
-          .collection("BookItem")
+          .collection("QuestionAndAnswer")
           .where('id', isGreaterThan: largestId)
           .getDocuments();
       document.documents.forEach((document) async {
-        await db.saveBook(new Book(
-            id: document['id'],
-            name: document['name'],
-            description: document['description'],
-            imageURL: document['imageURL'],
-            pdfURL: document['pdfURL']));
-        createFileOfUrl(document['imageURL']).then((value) {
-          setState(() {});
-        });
-        if (foundRecord == false) {
-          foundRecord = true;
-        }
+        await db.saveEpic(db.formatEpicForSave(document, DatabaseHelper.QUESTION_AND_ANSWER));
+        foundRecord = true;
+
       });
+      if(foundRecord){
+        setState(() {});
+      }
+  }
+
+  migrateSpeeches() async{
+    QuerySnapshot document = await Firestore.instance
+        .collection("Lecture")
+        .where('fragmentName', isEqualTo: "speech")
+        .getDocuments();
+    document.documents.forEach((document) async {
+      print(document);
+      DocumentReference ref = await Firestore.instance.collection("Speech")
+          .add({
+        'id': document['id'],
+        'mp3URL': document['mp3URL'],
+        'name': document['name'],
+        'parentId': document['parentId'],
+        'pdfURL': document['pdfURL'],
+        'type': document['type'],
+      });
+      print(ref.documentID);
+
+    });
   }
 
 
@@ -71,9 +89,9 @@ class _QuestionAndAnswerState extends State<QuestionAndAnswer> {
                     padding: const EdgeInsets.all(10.0),
                   ),
                   FutureBuilder(
-                      future: db.getBookmarksOrComments(1,DatabaseHelper.COMMENT),
-                      builder: (_, comments) {
-                        if (comments.connectionState == ConnectionState.waiting) {
+                      future: db.getQandA(widget.parentId),
+                      builder: (_, listQandA) {
+                        if (listQandA.connectionState == ConnectionState.waiting) {
                           return Center(
                               child: SpinKitChasingDots(
                                 color: UtilColours.APP_BAR,
@@ -84,33 +102,36 @@ class _QuestionAndAnswerState extends State<QuestionAndAnswer> {
                           return   new Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: ListView.separated(
-                                itemCount: comments.data.length,
+                                itemCount: listQandA.data.length,
                                 itemBuilder: (BuildContext context, int index){
-                                  var comment = comments.data[index];
+                                  var qAndA = listQandA.data[index];
+                                  print(qAndA.toString());
                                   return ListTile(
-                                      title: Text(comment.comment.toString(), style: arabicTxtStyle(paramSize: 18.0)),
-                                      leading: new Icon(Icons.comment, color: UtilColours.APP_BAR,),
+                                      title: Text(qAndA.title.toString(), style: arabicTxtStyle(paramSize: 18.0)),
+                                      leading: new Icon(qAndA.type == "RECORD" ? Icons.description : Icons.menu, color: UtilColours.APP_BAR,),
                                       subtitle:  Container(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.stretch,
                                           children: <Widget>[
                                             Container(
-                                              child:   Text("Page: " + (comment.pageIndex + 1).toString(), style: arabicTxtStyle(paramSize: 18.0)),
+//                                              child: Text("Page: ".toString(), style: arabicTxtStyle(paramSize: 18.0)),
                                             ),
 
                                           ],
                                         ),),
-
-                                      trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){
-                                        print("todo");
-                                      }),
+//                                      trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){
+//                                      }),
                                       onTap: () {
+                                        print(qAndA.firebaseId);
                                         GlobalKey key = GlobalKey();
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  QuestionAndAnswer(title: "testsss", parentId: 0, key: key,)),
+                                              qAndA.type == "RECORD" ?
+                                              Mp3Player(title: qAndA.title, key: key) :
+                                              QandA(title: qAndA.title, parentId: qAndA.firebaseId, key: key)
+                                          ),
                                         );
                                       }
                                   );

@@ -162,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            QuestionAndAnswer(title: "test", parentId: 0, key: key,)),
+                                            QandA(title: "called from home", parentId: 0, key: key,)),
                                   );
                                 },
                               )
