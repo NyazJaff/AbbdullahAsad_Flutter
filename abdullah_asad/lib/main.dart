@@ -1,11 +1,12 @@
-import 'package:abdullah_asad/live_broadcast.dart';
-import 'package:abdullah_asad/question_and_answer.dart';
+import 'package:abdullah_asad/view/lectures.dart';
+import 'package:abdullah_asad/view/live_broadcast.dart';
+import 'package:abdullah_asad/view/speeches.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:abdullah_asad/home.dart';
 import 'package:abdullah_asad/books/list_books.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
-
+import 'package:abdullah_asad/view/about_shikh.dart';
 void main() async {
 //
   runApp(MyApp());
@@ -20,12 +21,14 @@ class MyApp extends StatelessWidget {
       //Route
       initialRoute: '/',
       routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) => MyHomePage(),
         '/books': (context) => ListBooks(),
         '/pdfScreen': (context) => PDFScreen(),
 //        '/q&a': (context) => QuestionAndAnswer("Q&a", 0),
         '/live_broadcast': (context) => LiveBroadcast(),
+        '/about_shikh': (context) => AbdoutShikh(),
+        '/lectures': (context) => Lectures(title:'Lectures', parentId: 0,),
+        '/speeches': (context) => Speeches(title:'Speeches', parentId: 0,),
       },
 
       //Localization

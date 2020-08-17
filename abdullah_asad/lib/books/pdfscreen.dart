@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:abdullah_asad/books/bookmarks_and_comments.dart';
-import 'package:abdullah_asad/layout_helper.dart';
+import 'package:abdullah_asad/utilities/layout_helper.dart';
 
 class PDFScreen extends StatefulWidget {
   final String path;

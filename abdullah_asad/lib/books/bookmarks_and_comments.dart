@@ -1,4 +1,4 @@
-import 'package:abdullah_asad/layout_helper.dart';
+import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:abdullah_asad/models/bookmarks_model.dart';
 import 'package:abdullah_asad/models/comments_and_bookmarks_model.dart';
 import 'package:flutter/material.dart';

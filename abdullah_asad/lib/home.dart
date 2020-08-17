@@ -1,5 +1,5 @@
-import 'package:abdullah_asad/layout_helper.dart';
-import 'package:abdullah_asad/question_and_answer.dart';
+import 'package:abdullah_asad/utilities/layout_helper.dart';
+import 'package:abdullah_asad/view/question_and_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:abdullah_asad/Helper/util.dart';
@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 iconSize: 40,
                                 color: UtilColours.PRIMARY_BROWN,
                                 onPressed: () {
-                                  print("pressed");
+                                  Navigator.pushNamed(context, '/speeches');
                                 },
                               )
                           )
@@ -84,30 +84,27 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: <Widget>[
                                 Column (
                                     children: <Widget>[
-                                      Padding(
-                                          padding: EdgeInsets.all(6.0),
-                                          child: Container (
-                                              child: IconButton (
-                                                icon:  Icon(FontAwesomeIcons.bookOpen),
-                                                iconSize: 37,
-                                                color: UtilColours.PRIMARY_BROWN,
-                                                onPressed: () {
-                                                  Navigator.pushNamed(context, '/books');
-                                                },
-                                              )
+                                      Container (
+                                        padding: EdgeInsets.all(6.0) ,
+                                          child: IconButton (
+                                            icon:  Icon(FontAwesomeIcons.bookOpen),
+                                            iconSize: 37,
+                                            color: UtilColours.PRIMARY_BROWN,
+                                            onPressed: () {
+                                              Navigator.pushNamed(context, '/books');
+                                            },
                                           )
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.all(6.0),
-                                        child: Container (
-                                            child: IconButton (
-                                              icon:  Icon(FontAwesomeIcons.solidUser),
-                                              iconSize: 37,
-                                              color: UtilColours.PRIMARY_BROWN,
-                                              onPressed: () async {
-                                              },
-                                            )
-                                        ),
+                                      Container (
+                                          padding: EdgeInsets.all(6.0),
+                                          child: IconButton (
+                                            icon:  Icon(FontAwesomeIcons.solidUser),
+                                            iconSize: 37,
+                                            color: UtilColours.PRIMARY_BROWN,
+                                            onPressed: () async {
+                                              Navigator.pushNamed(context, '/about_shikh');
+                                            },
+                                          )
                                       ),
                                     ]
                                 ),
@@ -122,31 +119,27 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 Column (
                                     children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.all(6.0),
-                                        child: Container (
-                                            child: IconButton (
-                                              icon:  Icon(FontAwesomeIcons.soundcloud),
-                                              iconSize: 37,
-                                              color: UtilColours.PRIMARY_BROWN,
-                                              onPressed: () {
-                                                print("pressed");
-                                              },
-                                            )
-                                        ),
+                                      Container (
+                                          padding: EdgeInsets.all(6.0),
+                                          child: IconButton (
+                                            icon:  Icon(FontAwesomeIcons.soundcloud),
+                                            iconSize: 37,
+                                            color: UtilColours.PRIMARY_BROWN,
+                                            onPressed: () {
+                                              Navigator.pushNamed(context, '/lectures');
+                                            },
+                                          )
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.all(6.0),
-                                        child: Container (
-                                            child: IconButton (
-                                              icon:  Icon(FontAwesomeIcons.broadcastTower),
-                                              iconSize: 37,
-                                              color: UtilColours.PRIMARY_BROWN,
-                                              onPressed: () {
-                                                Navigator.pushNamed(context, '/live_broadcast');
-                                              },
-                                            )
-                                        ),
+                                      Container (
+                                          padding: EdgeInsets.all(6.0),
+                                          child: IconButton (
+                                            icon:  Icon(FontAwesomeIcons.broadcastTower),
+                                            iconSize: 37,
+                                            color: UtilColours.PRIMARY_BROWN,
+                                            onPressed: () {
+                                              Navigator.pushNamed(context, '/live_broadcast');
+                                            },
+                                          )
                                       ),
                                     ]
                                 ),
@@ -162,15 +155,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            QandA(title: "called from home", parentId: 0, key: key,)),
+                                            QandA(title: "Question and Answer", parentId: 0, key: key,)),
                                   );
                                 },
                               )
                           )
                         ],
                       ),
-
-
                     ],
                   ),
                   Padding(padding: EdgeInsets.only(top: util_winHeightSize(context) > 530 ? util_winHeightSize(context)  * 0.3 : util_winHeightSize(context) *  0.04)),

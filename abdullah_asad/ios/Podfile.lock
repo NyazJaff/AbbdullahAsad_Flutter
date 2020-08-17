@@ -158,8 +158,6 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - audio_manager (0.0.1):
-    - Flutter
   - audioplayers (0.0.1):
     - Flutter
   - BoringSSL-GRPC (0.0.3):
@@ -229,9 +227,6 @@ PODS:
   - Flutter (1.0.0)
   - flutter_pdfview (0.0.1):
     - Flutter
-  - flutter_youtube (0.0.1):
-    - Flutter
-    - XCDYouTubeKit
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -292,12 +287,8 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - webview_flutter (0.0.1):
-    - Flutter
-  - XCDYouTubeKit (2.12.0)
 
 DEPENDENCIES:
-  - audio_manager (from `.symlinks/plugins/audio_manager/ios`)
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_firestore_web (from `.symlinks/plugins/cloud_firestore_web/ios`)
@@ -305,11 +296,9 @@ DEPENDENCIES:
   - firebase_core_web (from `.symlinks/plugins/firebase_core_web/ios`)
   - Flutter (from `Flutter`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
-  - flutter_youtube (from `.symlinks/plugins/flutter_youtube/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
@@ -332,11 +321,8 @@ SPEC REPOS:
     - gRPC-Core
     - leveldb-library
     - nanopb
-    - XCDYouTubeKit
 
 EXTERNAL SOURCES:
-  audio_manager:
-    :path: ".symlinks/plugins/audio_manager/ios"
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
   cloud_firestore:
@@ -351,20 +337,15 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_pdfview:
     :path: ".symlinks/plugins/flutter_pdfview/ios"
-  flutter_youtube:
-    :path: ".symlinks/plugins/flutter_youtube/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   path_provider_macos:
     :path: ".symlinks/plugins/path_provider_macos/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  webview_flutter:
-    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
-  audio_manager: 59466b2ea5552ebdcba8106796f09b9357ef12e0
   audioplayers: 84f968cea3f2deab00ec4f8ff53358b3c0b3992c
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   cloud_firestore: 31454d48df21f3e1a900015e36143c0d46a304b7
@@ -381,7 +362,6 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: ce993a3c3670a8f5d47ce371ac5d143c560608c5
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_pdfview: bdf86972519a15c6d8f50ad34e5b0429b255cbb4
-  flutter_youtube: 142f8d5af0a11963bdc73e13bcae6eb78db746c2
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: db118eb61a97dd8c4f7014e368d3c335cbbcf80a
   GoogleDataTransport: 8e9b210c97d55fbff306cc5468ff91b9cb32dcf5
@@ -394,8 +374,6 @@ SPEC CHECKSUMS:
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
-  webview_flutter: bec7599de6bfbe8008a739aa3ebd7b364ea9d0cd
-  XCDYouTubeKit: cdad9e696f991aac2739c5b25586c81f1301ba30
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 

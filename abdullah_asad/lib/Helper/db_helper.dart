@@ -14,6 +14,7 @@ class DatabaseHelper {
   static const String COMMENT = "COMMENT";
   static const String BOOKMARK = "BOOKMARK";
   static const String QUESTION_AND_ANSWER = "QUESTION_AND_ANSWER";
+  static const String LECTURES = "LECTURE"; //currently not saving to db
 
   static final DatabaseHelper _instance = new DatabaseHelper.internal();
   factory DatabaseHelper()=>_instance;

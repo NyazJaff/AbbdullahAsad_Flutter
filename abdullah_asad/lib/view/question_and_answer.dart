@@ -4,10 +4,9 @@ import 'package:abdullah_asad/models/epic.dart';
 import 'package:abdullah_asad/mp3_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:abdullah_asad/layout_helper.dart';
+import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import 'Helper/db_helper.dart';
+import '../Helper/db_helper.dart';
 
 
 class QandA extends StatefulWidget {
@@ -46,7 +45,6 @@ class _QandAState extends State<QandA> {
       document.documents.forEach((document) async {
         await db.saveEpic(db.formatEpicForSave(document, DatabaseHelper.QUESTION_AND_ANSWER));
         foundRecord = true;
-
       });
       if(foundRecord){
         setState(() {});
