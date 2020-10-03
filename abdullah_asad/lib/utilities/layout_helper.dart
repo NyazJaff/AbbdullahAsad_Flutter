@@ -32,7 +32,7 @@ Widget appBgImage(){
   );
 }
 
-final valueBoxDecorationStyle = BoxDecoration(
+final simpleDecorationStyle = BoxDecoration(
   color: Colors.white,
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: [
@@ -51,5 +51,26 @@ Widget emptyAppBar(){
         brightness: Brightness.light,
         backgroundColor: logoYellow,
       )
+  );
+}
+
+
+Widget buildBackground(){
+  return Container(
+    height:  double.infinity,
+    width: double.infinity,
+    decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              appBackgroundFirst,
+              appBackgroundFirst,
+              appBackgroundFirst,
+              appBackgroundSecond
+            ],
+            stops: [0.1,0.4,0.7, 0.9]
+        )
+    ),
   );
 }

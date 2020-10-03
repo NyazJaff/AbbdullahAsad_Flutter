@@ -52,65 +52,44 @@ class _SpeechesState extends State<Speeches> {
       return records;
   }
 
+  currentCustomers(){
+    List<dynamic> textList = [{"name": "nyaz"}, {"name": "aras"}, {"name": "zaida"}] ;
+    return Container(
+        child: ListView.separated (
+          itemCount: textList.length,
+          itemBuilder: (BuildContext context, int index){
+            var record = textList[index];
+            return ListTile(
+                title: Text(record['name']),
+                subtitle:  Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Container(
+                        child: Text("Page: ".toString()),
+                      ),
+                    ],
+                  ),),
+                onTap: () {
+                  //Navigator.pushNamed(context, '/login');
+                  print('sss');
+                }
+            );
+          }, separatorBuilder: (BuildContext context, int index) {
+          return Divider();
+        },)
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: app_bar(context, widget.title),
-        body:Scaffold(
-            body: Stack (
-                children: <Widget>[
-                  appBgImage(),
-                  new Padding(
-                    padding: const EdgeInsets.all(10.0),
-                  ),
-                  records.length > 0
-                  ? ListView.separated(
-                    itemCount: records.length,
-                    itemBuilder: (BuildContext context, int index){
-                      var qAndA = records[index];
-                      print(qAndA.toString());
-                      return
-                        ListTile(
-                            title: Text(qAndA.name.toString(), style: arabicTxtStyle(paramSize: 18.0)),
-                            leading: new Icon(qAndA.type == "RECORD" ? Icons.description : Icons.menu, color: UtilColours.APP_BAR,),
-                            subtitle:  Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  Container(
-//                                              child: Text("Page: ".toString(), style: arabicTxtStyle(paramSize: 18.0)),
-                                  ),
-
-                                ],
-                              ),),
-//                                      trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){
-//                                      }),
-                            onTap: () {
-                              GlobalKey key = GlobalKey();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                    qAndA.type == "RECORD" ?
-                                    Mp3Player(title: qAndA.name, key: key) :
-                                    Speeches(title: qAndA.name, parentId: qAndA.firebaseId, key: key)
-                                ),
-                              );
-                            }
-                        );
-                    }, separatorBuilder: (BuildContext context, int index) {
-                    return Divider();
-                  },)
-                  :Container(
-                      child: Center(
-                          child: SpinKitChasingDots(
-                            color: UtilColours.APP_BAR,
-                            size: 50.0,
-                          )
-                      )
-                  )
-                ]
-            )
+        body:Stack (
+            children: <Widget>[
+              appBgImage(),
+              currentCustomers()
+            ]
         )
     );
   }

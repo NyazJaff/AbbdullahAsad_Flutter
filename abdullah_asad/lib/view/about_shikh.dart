@@ -120,7 +120,7 @@ class _AbdoutShikhState extends State<AbdoutShikh> {
       key: Key(currentQuestion['title'] + TimeOfDay.now().toString()),
       title: Container(
         padding: EdgeInsets.all(10),
-        decoration: valueBoxDecorationStyle,
+        decoration: simpleDecorationStyle,
         child: Text(currentQuestion['title'],
             maxLines: 1,
             textDirection: TextDirection.rtl,
@@ -135,7 +135,7 @@ class _AbdoutShikhState extends State<AbdoutShikh> {
                   padding: EdgeInsets.all(5),
                   child: Container(
                     padding: EdgeInsets.all(10),
-                    decoration: valueBoxDecorationStyle,
+                    decoration: simpleDecorationStyle,
                     child: Text(currentQuestion['description'],
                         textDirection: TextDirection.rtl,
                         style: arabicTxtStyle(paramSize: 20)),
