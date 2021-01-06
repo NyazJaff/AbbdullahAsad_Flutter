@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/Helper/util.dart';
+import 'package:flutter/services.dart';
 
 final textAndIconColour =     Color(0xFF545756);
 final textAndIconHintColour = Color(0xFF969998);
@@ -54,6 +55,14 @@ Widget emptyAppBar(){
   );
 }
 
+BoxDecoration selectedListTileDec() {
+  return BoxDecoration(
+    border: Border.all(
+      color: UtilColours.APP_BAR,
+    ),
+    borderRadius: BorderRadius.circular(20.0),
+  );
+}
 
 Widget buildBackground(){
   return Container(

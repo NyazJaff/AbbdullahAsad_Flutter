@@ -22,14 +22,14 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
-  cloud_firestore: "^0.13.0+1"
 
+  cloud_firestore: "^0.14.4"
   flutter_pdfview: "^1.0.0+10"
+  flutter_spinkit: "^2.1.0"
+  just_audio:      "^0.6.4"
   path_provider:
   http:
   sqflite:
-  flutter_spinkit: "^2.1.0"
-  audioplayers: "^0.15.1"
 
 
   # The following adds the Cupertino Icons font to your application.

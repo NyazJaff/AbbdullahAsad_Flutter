@@ -8,6 +8,7 @@ import 'package:abdullah_asad/books/list_books.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
 import 'package:abdullah_asad/view/about_shikh.dart';
 
+import 'Helper/db_helper.dart';
 import 'mp3_player.dart';
 void main() async {
 //
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       //Route
-      initialRoute: '/mp3Player',
+      initialRoute: '/',
       routes: {
         '/': (context) => MyHomePage(),
         '/books': (context) => ListBooks(),
@@ -29,8 +30,8 @@ class MyApp extends StatelessWidget {
 //        '/q&a': (context) => QuestionAndAnswer("Q&a", 0),
         '/live_broadcast': (context) => LiveBroadcast(),
         '/about_shikh': (context) => AbdoutShikh(),
-        '/lectures': (context) => Lectures(title:'Lectures', parentId: 0,),
-        '/speeches': (context) => Speeches(title:'Speeches', parentId: 0,),
+        '/lectures': (context) => Lectures(title:'Lectures', parentId: 0, classType: DatabaseHelper.LECTURES),
+        '/speeches': (context) => Lectures(title:'Speech', parentId: 0, classType: DatabaseHelper.SPEECH),
         '/mp3Player': (context) => Mp3Player(title:'Speeches'),
       },
 

@@ -1,4 +1,5 @@
 import 'package:abdullah_asad/utilities/layout_helper.dart';
+import 'package:abdullah_asad/view/lectures.dart';
 import 'package:abdullah_asad/view/question_and_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,15 +40,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           Align (
                             alignment: Alignment(-1,-3),
                             child: Padding(
-                                padding: EdgeInsets.only(left: 2.0, top:  3.0),
-                                child: IconButton (
-                                  icon:  Icon(FontAwesomeIcons.userLock),
-                                  iconSize: 25,
-                                  color: UtilColours.PRIMARY_BROWN,
-                                  onPressed: () {
-                                    print("pressed");
-                                  },
-                                )
+                                padding: EdgeInsets.only(left: 2.0, top:  50.0),
+                                // child: IconButton (
+                                //   icon:  Icon(FontAwesomeIcons.userLock),
+                                //   iconSize: 25,
+                                //   color: UtilColours.PRIMARY_BROWN,
+                                //   onPressed: () {
+                                //     print("pressed");
+                                //   },
+                                // )
                             ),
                           )
                         ],
@@ -155,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            QandA(title: "Question and Answer", parentId: 0, key: key,)),
+                                            Lectures(title:'Question and Answer', parentId: 0, classType: DatabaseHelper.QUESTION_AND_ANSWER),),
                                   );
                                 },
                               )

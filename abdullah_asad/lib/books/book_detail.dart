@@ -37,7 +37,7 @@ class _BookDetailState extends State<BookDetail> {
 //      });
 //    });
 
-    createFileOfUrl(widget.post.data["pdfURL"], ).then((f) {
+    createFileOfUrl(widget.post.data()["pdfURL"], ).then((f) {
       setState(() {
         pathPDF = f.path;
         GlobalKey key = GlobalKey();
@@ -45,7 +45,7 @@ class _BookDetailState extends State<BookDetail> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  PDFScreen(path: pathPDF, title: widget.post.data["name"], currentPage: 10, key: key,)),
+                  PDFScreen(path: pathPDF, title: widget.post.data()["name"], currentPage: 10, key: key,)),
         );
       });
     });
@@ -75,7 +75,7 @@ class _BookDetailState extends State<BookDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.post.data["name"]) ,
+        title: Text(widget.post.data()["name"]) ,
       ),
       body: Scaffold(
         body: Center(child: Builder(
@@ -84,8 +84,8 @@ class _BookDetailState extends State<BookDetail> {
               children: <Widget>[
                 Container(
                   child: ListTile(
-                    title: Text(widget.post.data["name"]),
-                    subtitle: Text(widget.post.data["name"]),
+                    title: Text(widget.post.data()["name"]),
+                    subtitle: Text(widget.post.data()["name"]),
                   ),
                 ),
                 RaisedButton(
@@ -96,7 +96,7 @@ class _BookDetailState extends State<BookDetail> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  PDFScreen(path: pathPDF, title: widget.post.data["name"],currentPage: 6, key: key,)),
+                                  PDFScreen(path: pathPDF, title: widget.post.data()["name"],currentPage: 6, key: key,)),
                         );
                       }
                     }),

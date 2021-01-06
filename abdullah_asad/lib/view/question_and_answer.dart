@@ -43,6 +43,7 @@ class _QandAState extends State<QandA> {
           .where('id', isGreaterThan: largestId)
           .getDocuments();
       document.documents.forEach((document) async {
+
         await db.saveEpic(db.formatEpicForSave(document, DatabaseHelper.QUESTION_AND_ANSWER));
         foundRecord = true;
       });
