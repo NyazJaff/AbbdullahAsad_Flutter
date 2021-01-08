@@ -1,6 +1,5 @@
 import 'package:abdullah_asad/view/lectures.dart';
 import 'package:abdullah_asad/view/live_broadcast.dart';
-import 'package:abdullah_asad/view/speeches.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:abdullah_asad/home.dart';
@@ -9,7 +8,7 @@ import 'package:abdullah_asad/books/pdfscreen.dart';
 import 'package:abdullah_asad/view/about_shikh.dart';
 
 import 'Helper/db_helper.dart';
-import 'mp3_player.dart';
+import 'view/mp3_player.dart';
 void main() async {
 //
   runApp(MyApp());

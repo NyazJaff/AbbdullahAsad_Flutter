@@ -1,12 +1,10 @@
 import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:abdullah_asad/view/lectures.dart';
-import 'package:abdullah_asad/view/question_and_answer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'Helper/db_helper.dart';
-import 'models/book_model.dart';
 
 class MyHomePage extends StatefulWidget {
 //  MyHomePage({Key key, this.title}) : super(key: key);

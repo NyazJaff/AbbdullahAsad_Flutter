@@ -1,15 +1,10 @@
 import 'package:abdullah_asad/utilities/layout_helper.dart';
-import 'package:abdullah_asad/models/bookmarks_model.dart';
-import 'package:abdullah_asad/models/comments_and_bookmarks_model.dart';
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:abdullah_asad/models/bookmarks_model.dart';
 import 'package:abdullah_asad/models/comments_model.dart';
 import 'package:abdullah_asad/Helper/db_helper.dart';
-
+import 'package:abdullah_asad/utilities/chasing_dots.dart';
 class BookmarksAndComments extends StatefulWidget{
   BookmarksAndComments({
     Key key,

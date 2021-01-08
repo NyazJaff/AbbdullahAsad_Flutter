@@ -26,17 +26,6 @@ class _BookDetailState extends State<BookDetail> {
   void initState(){
     super.initState();
 
-//    fromAsset('assets/pdfs/guide.pdf', 'guide.pdf').then((f) {
-//      setState(() {
-//        corruptedPathPDF = f.path;
-//      });
-//    });
-//    fromAsset('assets/pdfs/guide.pdf', 'guide.pdf').then((f) {
-//      setState(() {
-//        pathPDF = f.path;
-//      });
-//    });
-
     createFileOfUrl(widget.post.data()["pdfURL"], ).then((f) {
       setState(() {
         pathPDF = f.path;

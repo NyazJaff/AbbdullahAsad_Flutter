@@ -4,7 +4,7 @@ import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
-import 'Helper/util.dart';
+import '../Helper/util.dart';
 
 class Mp3Player extends StatefulWidget {
   Mp3Player({

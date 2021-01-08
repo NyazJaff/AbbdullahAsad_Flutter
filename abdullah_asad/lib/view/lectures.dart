@@ -2,16 +2,14 @@
 // Fade route
 // Language
 
-import 'dart:async';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:abdullah_asad/models/epic.dart';
-import 'package:abdullah_asad/mp3_player.dart';
-import 'package:abdullah_asad/view/question_and_answer.dart';
+import 'package:abdullah_asad/view/mp3_player.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:abdullah_asad/utilities/chasing_dots.dart';
 import 'package:just_audio/just_audio.dart';
 import '../Helper/db_helper.dart';
 
