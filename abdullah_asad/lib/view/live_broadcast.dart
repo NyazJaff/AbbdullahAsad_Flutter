@@ -2,9 +2,7 @@ import 'dart:async';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
-//import 'package:flutter_youtube/flutter_youtube.dart';
-//import 'package:webview_flutter/webview_flutter.dart';
-
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class LiveBroadcast extends StatefulWidget {
   @override
@@ -12,9 +10,10 @@ class LiveBroadcast extends StatefulWidget {
 }
 
 class _LiveBroadcastState extends State<LiveBroadcast> {
-//  final Completer<WebViewController> _controller =
-//  Completer<WebViewController>();
 
+  InAppWebViewController webView;
+  String url = "";
+  double progress = 0;
 
   @override
   void initState() {
@@ -23,74 +22,57 @@ class _LiveBroadcastState extends State<LiveBroadcast> {
 
   }
 
-//  void playYoutubeVideo() {
-//    FlutterYoutube.playYoutubeVideoByUrl(
-//      apiKey: "AIzaSyAT1Tp_KlzOA7nUvGXP8VMtKaUNGujEgj4",
-//      videoUrl: "https://www.youtube.com/watch?v=wgTBLj7rMPM",
-//      fullScreen: false,
-//      autoPlay: false,
-//      appBarColor: Colors.green,
-//      backgroundColor: Colors.green
-//    );
-//  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//        extendBodyBehindAppBar: true,
-//        backgroundColor: Colors.red,
         appBar: app_bar(context, "Broadcast "),
-        body:Scaffold(
-            body: Stack (
-                children: <Widget>[
-                  appBgImage(),
-//                  new Padding(
-//                    padding: const EdgeInsets.all(10.0),
-//                    child: new RaisedButton(
-//                        child: new Text("Play Default Video"),
-//                        onPressed: playYoutubeVideo),
-//                  ),
-//                        WebView(
-//                        initialUrl: 'https://abdullah-asad.com/',
-//    javascriptMode: JavascriptMode.unrestricted,
-//    onWebViewCreated: (WebViewController webViewController) {
-//    _controller.complete(webViewController);
-//    },
-//    // TODO(iskakaushik): Remove this when collection literals makes it to stable.
-//    // ignore: prefer_collection_literals
-//    javascriptChannels: <JavascriptChannel>[
-//    _toasterJavascriptChannel(context),
-//    ].toSet(),
-//    navigationDelegate: (NavigationRequest request) {
-//    if (request.url.startsWith('https://www.youtube.com/')) {
-//    print('blocking navigation to $request}');
-//    return NavigationDecision.prevent;
-//    }
-//    print('allowing navigation to $request');
-//    return NavigationDecision.navigate;
-//    },
-//    onPageStarted: (String url) {
-//    print('Page started loading: $url');
-//    },
-//    onPageFinished: (String url) {
-//    print('Page finished loading: $url');
-//    },
-//    gestureNavigationEnabled: true,
-//    )
-                ]
-            )
+        body: SafeArea(
+          child: Container(
+              child: Column(children: <Widget>[
+                progress < 1.0
+                    ? Container(
+                      padding: EdgeInsets.all(10.0),
+                      child: LinearProgressIndicator(
+                          value: progress,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),),
+                    )
+                    : Container(),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.all(2),
+                    decoration:
+                    BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+                    child: InAppWebView(
+                      initialUrl: "https://www.pscp.tv/Aaalsaad7",
+                      initialHeaders: {},
+                      initialOptions: InAppWebViewGroupOptions(
+                          crossPlatform: InAppWebViewOptions(
+                            debuggingEnabled: true,
+                          )
+                      ),
+                      onWebViewCreated: (InAppWebViewController controller) {
+                        webView = controller;
+                      },
+                      onLoadStart: (InAppWebViewController controller, String url) {
+                        setState(() {
+                          this.url = url;
+                        });
+                      },
+                      onLoadStop: (InAppWebViewController controller, String url) async {
+                        setState(() {
+                          this.url = url;
+                        });
+                      },
+                      onProgressChanged: (InAppWebViewController controller, int progress) {
+                        setState(() {
+                          this.progress = progress / 100;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ])),
         )
     );
   }
-//
-//  JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
-//    return JavascriptChannel(
-//        name: 'Toaster',
-//        onMessageReceived: (JavascriptMessage message) {
-//          Scaffold.of(context).showSnackBar(
-//            SnackBar(content: Text(message.message)),
-//          );
-//        });
-//  }
 }

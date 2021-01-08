@@ -8,6 +8,7 @@ import 'package:abdullah_asad/models/epic.dart';
 import 'package:abdullah_asad/mp3_player.dart';
 import 'package:abdullah_asad/view/question_and_answer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -61,18 +62,12 @@ class _LecturesState extends State<Lectures> {
   _createPlayList()async{
     if(_displayPlayer == true){
       for(final e in this.records){
-        print(e.firebaseId);
-        var encoded = Uri.encodeFull(e.mp3URL);
-        mp3List.add(AudioSource.uri(
-          Uri.parse(
-              encoded),
-          tag: AudioMetadata(
-            album: "Science Friday",
-            title: "A Salute To Head-Scratching Science",
-            artwork:
-            "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-          ),
-        ));
+        String url = e.mp3URL;
+
+        if(hasArabicChar(e.mp3URL)){
+          url = Uri.encodeFull(url);
+        }
+        mp3List.add(AudioSource.uri(Uri.parse(url)));
       }
     }
 
@@ -90,6 +85,7 @@ class _LecturesState extends State<Lectures> {
   }
 
   pullDataFromNetwork()async{
+    await Firebase.initializeApp();
     switch (widget.classType) {
       case DatabaseHelper.QUESTION_AND_ANSWER : // Enter this block if mark == 0
         await _pullQandA();
@@ -109,33 +105,33 @@ class _LecturesState extends State<Lectures> {
   }
 
   _pullSpeech() async {
-    QuerySnapshot document = await Firestore.instance
+    QuerySnapshot document = await FirebaseFirestore.instance
         .collection("Lecture")
         .where('parentId', isEqualTo: widget.parentId)
         .where('fragmentName', isEqualTo: 'speech')
-        .getDocuments();
+        .get();
 
     formatFirebaseDocuments(document);
     return records;
   }
 
   _pullLectures() async {
-      QuerySnapshot document = await Firestore.instance
+      QuerySnapshot document = await FirebaseFirestore.instance
           .collection("Lecture")
           .where('parentId', isEqualTo: widget.parentId)
           .where('fragmentName', isEqualTo: 'lecture')
-          .getDocuments();
+          .get();
 
       formatFirebaseDocuments(document);
       return records;
   }
 
   _pullQandA() async {
-    QuerySnapshot document = await Firestore.instance
+    QuerySnapshot document = await FirebaseFirestore.instance
         .collection("QuestionAndAnswer")
         .where('parentId', isEqualTo: widget.parentId)
     // .where('id', isGreaterThan: largestId)
-        .getDocuments();
+        .get();
 
     formatFirebaseDocuments(document);
     return records;

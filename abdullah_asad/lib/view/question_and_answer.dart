@@ -58,7 +58,6 @@ class _QandAState extends State<QandA> {
         .where('fragmentName', isEqualTo: "speech")
         .getDocuments();
     document.documents.forEach((document) async {
-      print(document);
       DocumentReference ref = await Firestore.instance.collection("Speech")
           .add({
         'id': document['id'],
@@ -68,7 +67,6 @@ class _QandAState extends State<QandA> {
         'pdfURL': document['pdfURL'],
         'type': document['type'],
       });
-      print(ref.documentID);
 
     });
   }
@@ -104,7 +102,6 @@ class _QandAState extends State<QandA> {
                                 itemCount: listQandA.data.length,
                                 itemBuilder: (BuildContext context, int index){
                                   var qAndA = listQandA.data[index];
-                                  print(qAndA.toString());
                                   return ListTile(
                                       title: Text(qAndA.title.toString(), style: arabicTxtStyle(paramSize: 18.0)),
                                       leading: new Icon(qAndA.type == "RECORD" ? Icons.description : Icons.menu, color: UtilColours.APP_BAR,),
@@ -121,7 +118,6 @@ class _QandAState extends State<QandA> {
 //                                      trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){
 //                                      }),
                                       onTap: () {
-                                        print(qAndA.firebaseId);
                                         GlobalKey key = GlobalKey();
                                         Navigator.push(
                                           context,

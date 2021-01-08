@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:abdullah_asad/Helper/db_helper.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:abdullah_asad/models/book_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,7 @@ import 'package:abdullah_asad/books/book_detail.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 
 class ListBooks extends StatefulWidget {
   @override
@@ -30,20 +32,21 @@ class _ListBooksState extends State<ListBooks> {
   }
 
   pullBooks() async {
+    await Firebase.initializeApp();
     int largestId = await db.largestBookId();
     bool foundRecord = false;
-    QuerySnapshot document = await Firestore.instance
+    QuerySnapshot document = await FirebaseFirestore.instance
         .collection("BookItem")
         .where('id', isGreaterThan: largestId)
-        .getDocuments();
-    document.documents.forEach((document) async {
+        .get();
+    document.docs.forEach((document) async {
       await db.saveBook(new Book(
-          id: document['id'],
-          name: document['name'],
-          description: document['description'],
-          imageURL: document['imageURL'],
-          pdfURL: document['pdfURL']));
-      createFileOfUrl(document['imageURL']).then((value) {
+          id: document.data()['id'],
+          name: document.data()['name'],
+          description: document.data()['description'],
+          imageURL: document.data()['imageURL'],
+          pdfURL: document.data()['pdfURL']));
+      createFileOfUrl(document.data()['imageURL']).then((value) {
         setState(() {});
       });
       if (foundRecord == false) {
@@ -184,38 +187,30 @@ class _BookListAdapterState extends State<BookListAdapter> {
       child: SizedBox(
           child: InkWell(
         child: Container(
-            padding: new EdgeInsets.only(left: 15.0, bottom: 8.0, right: 16.0),
+            padding: new EdgeInsets.only(top: 135.0, bottom: 10, right: 5.0, left: 5.0),
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 image: FileImage(widget.thumbnail),
                 fit: BoxFit.cover,
               ),
             ),
-            child: new Stack(
-              children: <Widget>[
-                FutureBuilder(
-                  builder: (context, exists) {
-                    if (exists.connectionState == ConnectionState.done &&
-                        exists.data == null) {
-                      return Positioned(
-                          right: 0,
-                          left: 0,
-                          bottom: 0.0,
-                          child: RaisedButton.icon(
-                            onPressed: () {
-                              pdfFileDownload();
-                            },
-                            icon: Icon(Icons.file_download,
-                                color: UtilColours.APP_BAR),
-                            label: Text("Download"),
-                            color: UtilColours.APP_BAR_NAV_BUTTON,
-                          ));
-                    }
-                    return Container();
-                  },
-                  future: doesUrlFileExits(context, widget.pdfURL),
-                ),
-              ],
+            child: FutureBuilder(
+              builder: (context, exists) {
+                if (exists.connectionState == ConnectionState.done &&
+                    exists.data == null) {
+                  return RaisedButton.icon(
+                    onPressed: () {
+                      pdfFileDownload();
+                    },
+                    icon: Icon(Icons.file_download,
+                        color: UtilColours.APP_BAR),
+                    label: Text("Download"),
+                    color: UtilColours.APP_BAR_NAV_BUTTON,
+                  );
+                }
+                return Container();
+              },
+              future: doesUrlFileExits(context, widget.pdfURL),
             )),
         onTap: () {
           doesUrlFileExits(context, widget.pdfURL).then((exists) {

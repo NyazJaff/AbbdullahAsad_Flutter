@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:abdullah_asad/books/bookmarks_and_comments.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
+import 'package:share/share.dart';
 
 class PDFScreen extends StatefulWidget {
   final String path;
@@ -36,6 +37,8 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
 
   @override
   void initState() {
+
+    print(widget.path);
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this); //used for keyboard detection
@@ -128,6 +131,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 IconButton(icon: Icon(Icons.share), onPressed: () {
+                  Share.shareFiles([widget.path, ], text: widget.title, subject: widget.title, );
                 }),
                 IconButton(icon: pageBookmarked ? Icon(Icons.bookmark) :Icon(Icons.bookmark_border) , onPressed: () async{
                   if(!pageBookmarked){

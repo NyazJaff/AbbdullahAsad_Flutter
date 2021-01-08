@@ -76,7 +76,8 @@ class DatabaseHelper {
     print("Table Epic is created");
   }
 
-  Epic formatEpicForSave(DocumentSnapshot document, String category) {
+  Epic formatEpicForSave(DocumentSnapshot documents, String category) {
+    var document = documents.data();
     return new Epic(
       parentId: document['parentId'] != null ? document['parentId'] : "",
       firebaseId: document['id'] != null ? document['id'] : "",
@@ -171,14 +172,12 @@ class DatabaseHelper {
   Future<int> saveBook(Book book) async {
     var dbClient = await db;
     int res = await dbClient.insert(("Book"), book.toMap());
-//    print(book.toString() + "saved");
     return res;
   }
 
   Future<int> deleteBook() async {
     var dbClient = await db;
     int res = await dbClient.delete("Book");
-//    print(("book deleted!"));
     return res;
   }
 
@@ -204,14 +203,12 @@ class DatabaseHelper {
   Future<int> saveCommentOrBookmark(CommentAndBookmark object) async {
     var dbClient = await db;
     int res = await dbClient.insert(("CommentAndBookmark"), object.toMap());
-//    print(object.toString() + "saved");
     return res;
   }
 
   Future<int> deleteAllCommentOrBookmark() async {
     var dbClient = await db;
     int res = await dbClient.delete("CommentAndBookmark");
-//    print(("CommentAndBookmark deleted!"));
     return res;
   }
 
@@ -245,7 +242,6 @@ class DatabaseHelper {
     var deleted = false;
 
     dbClient.rawDelete('DELETE FROM CommentAndBookmark where bookId=? and pageIndex=? and type=?', [bookId, pageIndex, type]).then((value) {
-      print(value);
       deleted = true;
     });
     return deleted;

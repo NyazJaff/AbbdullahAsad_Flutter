@@ -44,6 +44,11 @@ showToast(context, message){
   ));
 }
 
+bool hasArabicChar(val){
+  final allArabicChar = RegExp('[\u0621-\u064A]+');
+  return allArabicChar.hasMatch(val);
+}
+
 Future<File> doesUrlFileExits(context, url) async{
   final filename = url.substring(url.lastIndexOf("/") + 1);
   String dir = (await getApplicationDocumentsDirectory()).path;
@@ -54,7 +59,6 @@ Future<File> doesUrlFileExits(context, url) async{
 }
 
 deleteUrlFileIfExits(url) async{
-
   //TODO write deletion
   final filename = url.substring(url.lastIndexOf("/") + 1);
   String dir = (await getApplicationDocumentsDirectory()).path;

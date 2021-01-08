@@ -8,12 +8,14 @@
 
     <uses-permission android:name="ANDROID.PERMISSION.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="ANDROID.PERMISSION.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="abdullah_asad"
-        android:icon="@mipmap/ic_launcher">
+        android:label="المحدث عبدالله السعد"
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"> <!-- Allow none HTTPs calls  -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -31,5 +33,15 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <provider
+                android:name="com.pichillilorenzo.flutter_inappwebview.InAppWebViewFileProvider"
+                android:authorities="${applicationId}.flutter_inappwebview.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

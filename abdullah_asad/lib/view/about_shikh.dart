@@ -115,7 +115,6 @@ class _AbdoutShikhState extends State<AbdoutShikh> {
 
   Widget _fatawaView(index) {
     final currentQuestion = aboutContent[index];
-    print(currentQuestion);
     return ExpansionTile(
       key: Key(currentQuestion['title'] + TimeOfDay.now().toString()),
       title: Container(

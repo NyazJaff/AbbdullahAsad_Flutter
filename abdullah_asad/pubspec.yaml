@@ -23,10 +23,14 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  cloud_firestore: "^0.14.4"
-  flutter_pdfview: "^1.0.0+10"
-  flutter_spinkit: "^2.1.0"
-  just_audio:      "^0.6.4"
+  firebase_core: ^0.5.3
+  cloud_firestore:      "0.14.4"
+  flutter_pdfview:      "1.0.4"
+  flutter_spinkit:      "2.1.0"
+  just_audio:           "^0.6.4"
+  share:                "^0.6.5+4" # Share files with others
+  flutter_inappwebview: "^4.0.0+4" # Open webpage
+  url_launcher:         "^5.4.11"
   path_provider:
   http:
   sqflite:
@@ -40,8 +44,17 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_name: "^0.0.1"
+  flutter_launcher_icons: ^0.8.1
 
 
+flutter_launcher_name:
+  name: "المحدث عبدالله السعد"
+
+flutter_icons:
+  image_path: 'assets/brand/logo512_white_bg.png'
+  android: true
+  ios: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

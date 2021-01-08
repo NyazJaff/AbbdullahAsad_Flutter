@@ -2,6 +2,7 @@ import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:abdullah_asad/view/lectures.dart';
 import 'package:abdullah_asad/view/question_and_answer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'Helper/db_helper.dart';
@@ -46,7 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 //   iconSize: 25,
                                 //   color: UtilColours.PRIMARY_BROWN,
                                 //   onPressed: () {
-                                //     print("pressed");
                                 //   },
                                 // )
                             ),
@@ -174,47 +174,39 @@ class _MyHomePageState extends State<MyHomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
 //                            Text(MediaQuery.of(context).size.height.toString()),
+//                             Padding(
+//                               padding: EdgeInsets.all(7.0),
+//                               child: Container (
+//                                   color: Color(0xff3b5998),
+//                                   width: 40.0,
+//                                   height: 40.0,
+//                                   child: IconButton (
+//                                     icon:  Icon(FontAwesomeIcons.facebookF),
+//                                     iconSize: 25,
+//                                     color: Colors.white.withOpacity(1),
+//                                     onPressed: () {
+//                                     },
+//                                   )
+//                               ),
+//                             ),
+//                             Padding(
+//                               padding: EdgeInsets.all(7.0),
+//                               child: Container (
+//                                   color: Color(0xff00acee),
+//                                   width: 40.0,
+//                                   height: 40.0,
+//                                   child: IconButton (
+//                                     icon:  Icon(FontAwesomeIcons.twitter),
+//                                     iconSize: 25,
+//                                     color: Color(0xffffffff),
+//                                     onPressed: () async {
+//                                       await InAppBrowser.openWithSystemBrowser(
+//                                           url: "https://twitter.com/Aaalsaad7");
+//                                     },
+//                                   )
+//                               ),
+//                             ),
                             Padding(
-                              padding: EdgeInsets.all(7.0),
-                              child: Container (
-                                  color: Color(0xff3b5998),
-                                  width: 40.0,
-                                  height: 40.0,
-                                  child: IconButton (
-                                    icon:  Icon(FontAwesomeIcons.facebookF),
-                                    iconSize: 25,
-                                    color: Colors.white.withOpacity(1),
-                                    onPressed: () {
-                                      print("pressed");
-                                    },
-                                  )
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(7.0),
-                              child: Container (
-                                  color: Color(0xff00acee),
-                                  width: 40.0,
-                                  height: 40.0,
-                                  child: IconButton (
-                                    icon:  Icon(FontAwesomeIcons.twitter),
-                                    iconSize: 25,
-                                    color: Color(0xffffffff),
-                                    onPressed: () {
-                                      print("pressed");
-                                    },
-                                  )
-                              ),
-                            ),
-                            Padding(
-//                      IconButton (
-//                        icon:  Icon(FontAwesomeIcons.youtubeSquare),
-//                        iconSize: 45,
-//                        color: Color(0xffc4302b),
-//                        onPressed: () {
-//                          print("pressed");
-//                        },
-//                      ),
                               padding: EdgeInsets.all(7.0),
                               child: Container (
                                   color: Colors.white,
@@ -224,8 +216,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     icon:  Icon(FontAwesomeIcons.youtube),
                                     iconSize: 25,
                                     color: Color(0xffc4302b),
-                                    onPressed: () {
-                                      print("pressed");
+                                    onPressed: () async {
+                                      await InAppBrowser.openWithSystemBrowser(
+                                          url: "https://www.youtube.com/channel/UCHfgtjpGxCLabIfRG-Zvpyw/videos");
                                     },
                                   )
                               ),
@@ -240,8 +233,26 @@ class _MyHomePageState extends State<MyHomePage> {
                                     icon:  Icon(FontAwesomeIcons.telegramPlane),
                                     iconSize: 25,
                                     color: Color(0xffffffff),
-                                    onPressed: () {
-                                      print("pressed");
+                                    onPressed: () async {
+                                      await InAppBrowser.openWithSystemBrowser(
+                                          url: "https://t.me/Aaalsaad7");
+                                    },
+                                  )
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(7.0),
+                              child: Container (
+                                  color: Color(0xffffffff),
+                                  width: 40.0,
+                                  height: 40.0,
+                                  child: IconButton (
+                                    icon:  Icon(FontAwesomeIcons.periscope),
+                                    iconSize: 25,
+                                    color: Color(0xffdb5248),
+                                    onPressed: () async {
+                                      await InAppBrowser.openWithSystemBrowser(
+                                          url: "https://www.pscp.tv/Aaalsaad7");
                                     },
                                   )
                               ),
@@ -256,8 +267,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     icon:  Icon(FontAwesomeIcons.globe),
                                     iconSize: 25,
                                     color: Color(0xffffffff),
-                                    onPressed: () {
-                                      print("pressed");
+                                    onPressed: () async {
+                                      await InAppBrowser.openWithSystemBrowser(
+                                          url: "http://abdullah-asad.com/");
                                     },
                                   )
                               ),

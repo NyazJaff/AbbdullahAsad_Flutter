@@ -42,7 +42,6 @@ class _SpeechesState extends State<Speeches> {
           .where('parentId', isEqualTo: widget.parentId)
           .getDocuments();
       document.documents.forEach((document) async {
-        print(document);
         recordsFound = true;
         records.add(db.formatEpicForSave(document, DatabaseHelper.LECTURES));
       });
@@ -72,7 +71,6 @@ class _SpeechesState extends State<Speeches> {
                   ),),
                 onTap: () {
                   //Navigator.pushNamed(context, '/login');
-                  print('sss');
                 }
             );
           }, separatorBuilder: (BuildContext context, int index) {
