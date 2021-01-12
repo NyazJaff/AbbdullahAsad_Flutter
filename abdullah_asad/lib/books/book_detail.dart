@@ -26,6 +26,7 @@ class _BookDetailState extends State<BookDetail> {
   void initState(){
     super.initState();
 
+    print(pathPDF);
     createFileOfUrl(widget.post.data()["pdfURL"], ).then((f) {
       setState(() {
         pathPDF = f.path;

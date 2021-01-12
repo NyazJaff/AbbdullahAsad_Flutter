@@ -29,10 +29,13 @@ dependencies:
 #  flutter_spinkit:      "2.1.0"  # Loading animation
   just_audio:           "^0.6.4"
   share:                "^0.6.5+4" # Share files with others
-  flutter_inappwebview: "^4.0.0+4" # Open webpage
+  flutter_inappwebview: "^4.0.0+4" # Open webpage for live stream
   url_launcher:         "^5.4.11"
+  #progress_state_button: "^1.0.2"
+  percent_indicator: "^2.1.7+2"
+  dio: "^3.0.10"
+  flutter_staggered_animations: "^0.1.2" # Display grid with animation
   path_provider:
-#  http:
   sqflite:
 
 

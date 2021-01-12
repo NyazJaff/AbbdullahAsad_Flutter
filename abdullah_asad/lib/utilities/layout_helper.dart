@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:flutter/services.dart';
 
+import 'chasing_dots.dart';
+
 final textAndIconColour =     Color(0xFF545756);
 final textAndIconHintColour = Color(0xFF969998);
 final logoYellow =            Color(0xFFFFCA0A);
@@ -11,15 +13,23 @@ final appBackgroundSecond =   Color(0xFFededed);
 
 
 TextStyle arabicTxtStyle({paramColour: UtilColours.APP_BAR, double paramSize: 20.0, paramBold: false}){
-   return TextStyle(
-       fontSize: paramSize,
-       color: paramColour,
-       fontFamily: "Tajawal",
-       fontWeight: paramBold ? FontWeight.bold : FontWeight.normal,
-       fontStyle: FontStyle.normal,
-       letterSpacing: 2,
-       height: 1.5
+  return TextStyle(
+      fontSize: paramSize,
+      color: paramColour,
+      fontFamily: "Tajawal",
+      fontWeight: paramBold ? FontWeight.bold : FontWeight.normal,
+      fontStyle: FontStyle.normal,
+      letterSpacing: 2,
+      height: 1.5
   );
+}
+
+Widget displayLoading({size: 50.0}){
+  return Center(
+      child: SpinKitChasingDots(
+        color: UtilColours.APP_BAR,
+        size: size,
+      ));
 }
 
 Widget appBgImage(){

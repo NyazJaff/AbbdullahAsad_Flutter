@@ -3,6 +3,7 @@ import 'package:abdullah_asad/Helper/db_helper.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:abdullah_asad/models/book_model.dart';
 import 'package:abdullah_asad/utilities/chasing_dots.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -11,7 +12,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:abdullah_asad/books/book_detail.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
-
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:abdullah_asad/utilities/progress_button/iconed_button.dart';
+import 'package:abdullah_asad/utilities/progress_button/progress_button.dart';
 
 class ListBooks extends StatefulWidget {
   @override
@@ -19,22 +22,21 @@ class ListBooks extends StatefulWidget {
 }
 
 class _ListBooksState extends State<ListBooks> {
-  String dir = "";
+
   var db = new DatabaseHelper();
+  var loading = true;
 
   @override
   void initState() {
     // TODO: implement initState
+    // db.deleteBook();
     pullBooks();
-    getSystemPath();
-//    db.deleteBook();
     super.initState();
   }
 
   pullBooks() async {
     await Firebase.initializeApp();
     int largestId = await db.largestBookId();
-    bool foundRecord = false;
     QuerySnapshot document = await FirebaseFirestore.instance
         .collection("BookItem")
         .where('id', isGreaterThan: largestId)
@@ -46,12 +48,12 @@ class _ListBooksState extends State<ListBooks> {
           description: document.data()['description'],
           imageURL: document.data()['imageURL'],
           pdfURL: document.data()['pdfURL']));
-      createFileOfUrl(document.data()['imageURL']).then((value) {
-        setState(() {});
-      });
-      if (foundRecord == false) {
-        foundRecord = true;
-      }
+      // createFileOfUrl(document.data()['imageURL']).then((value) {
+      //   // setState(() {});
+      // });
+    });
+    setState(() {
+      loading = false;
     });
   }
 
@@ -60,28 +62,8 @@ class _ListBooksState extends State<ListBooks> {
         context,
         MaterialPageRoute(
             builder: (context) => BookDetail(
-                  post: post,
-                )));
-  }
-
-  getSystemPath() async {
-    this.dir = (await getApplicationDocumentsDirectory()).path;
-    print(this.dir);
-  }
-
-//  Used to find the file on users device
-  getFilePathBasedOnUrl(url) {
-    var path = "$dir/" + url.substring(url.lastIndexOf("/") + 1);
-    if(File(path).existsSync() == true){
-      return path;
-    }else{
-      createFileOfUrl(url).then((value) {
-        setState(() {
-        });
-      });
-    }
-    return path;
-
+              post: post,
+            )));
   }
 
   @override
@@ -92,73 +74,85 @@ class _ListBooksState extends State<ListBooks> {
         appBar: app_bar(context, "Books"),
         body: Scaffold(
             body: Stack(children: <Widget>[
-          appBgImage(),
-          Container(
-            child: FutureBuilder(
-                future: db.books(),
-                builder: (_, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: SpinKitChasingDots(
-                        color: UtilColours.APP_BAR,
-                        size: 50.0,
-                      )
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30.0),
-                      child: CustomScrollView(
-                        slivers: <Widget>[
-                          SliverGrid(
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 300.0,
-                                    mainAxisSpacing: 0,
-                                    crossAxisSpacing: 0.0,
-                                    childAspectRatio: 0.80),
-                            delegate: SliverChildBuilderDelegate(
-                              (_, int index) {
-                                return Container(
-                                  child: BookListAdapter(
+              appBgImage(),
+              Container(
+                child: loading == true
+                    ? Center(
+                    child: SpinKitChasingDots(
+                      color: UtilColours.APP_BAR,
+                      size: 50.0,
+                    ))
+                    : FutureBuilder(
+                    future: db.books(),
+                    builder: (_, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                            child: SpinKitChasingDots(
+                              color: UtilColours.APP_BAR,
+                              size: 50.0,
+                            ));
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: CustomScrollView(
+                            slivers: <Widget>[
+                              AnimationLimiter(
+                                child: SliverGrid(
+                                  gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 300.0,
+                                      mainAxisSpacing: 0,
+                                      crossAxisSpacing: 0.0,
+                                      childAspectRatio: 0.80),
+                                  delegate: SliverChildBuilderDelegate(
+                                        (_, int index) {
+                                      return AnimationConfiguration.staggeredList(
+                                        position: index,
+                                        duration: const Duration(milliseconds: 375),
+                                        child: SlideAnimation(
+                                          horizontalOffset: 50.0,
+                                          verticalOffset: 50.0,
+                                          child: FadeInAnimation(
+                                            child: Container(
+                                              child: BookListAdapter(
 //                                            thumbnail:  Image.file(
 //                                                File("$dir/" + snapshot.data[index].data["imageURL"].substring(snapshot.data[index].data["imageURL"].lastIndexOf("/") + 1))
 //                                            ),
-                                    thumbnail: File(getFilePathBasedOnUrl(
-                                        snapshot.data[index].imageURL)),
-                                    imageURL: snapshot.data[index].imageURL,
-                                    pdfURL: snapshot.data[index].pdfURL,
-                                    name: snapshot.data[index].name,
-                                    description:
-                                        snapshot.data[index].description,
-                                    book: snapshot.data[index]
+                                                  imageURL: snapshot.data[index].imageURL,
+                                                  pdfURL: snapshot.data[index].pdfURL,
+                                                  name: snapshot.data[index].name,
+                                                  description:
+                                                  snapshot.data[index].description,
+                                                  book: snapshot.data[index]),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    childCount: snapshot.data.length,
                                   ),
-                                );
-                              },
-                              childCount: snapshot.data.length,
-                            ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  }
-                }),
-          )
-        ])));
+                        );
+                      }
+                    }),
+              )
+            ])));
   }
 }
 
 class BookListAdapter extends StatefulWidget {
-  BookListAdapter({
-    Key key,
-    this.thumbnail,
-    this.imageURL,
-    this.pdfURL,
-    this.name,
-    this.description,
-    this.book
-  }) : super(key: key);
+  BookListAdapter(
+      {Key key,
+        this.imageURL,
+        this.pdfURL,
+        this.name,
+        this.description,
+        this.book})
+      : super(key: key);
 
-  final File thumbnail;
   final String imageURL;
   final String pdfURL;
   final String name;
@@ -170,6 +164,17 @@ class BookListAdapter extends StatefulWidget {
 }
 
 class _BookListAdapterState extends State<BookListAdapter> {
+
+  bool boolLoadThumb = true;
+  String thumbPath = '';
+  double opacityLevel = 0.0;
+
+  @override
+  void initState() {
+    downloadThum();
+    super.initState();
+  }
+
   pdfFileDownload() {
     showToast(context, "Downloading!");
     createFileOfUrl(widget.pdfURL).then((f) {
@@ -180,59 +185,81 @@ class _BookListAdapterState extends State<BookListAdapter> {
     });
   }
 
+//  Used to find the file on users device
+//   getFilePathBasedOnUrl(url) {
+//   }
+  downloadThum() async{
+    String dir = await getSystemPath();
+    var path = "$dir/" + widget.imageURL.substring(widget.imageURL.lastIndexOf("/") + 1);
+    if (File(path).existsSync() == false) {
+      await createFileOfUrl(widget.imageURL);
+    }
+
+    setState(() {
+      thumbPath = path;
+      boolLoadThumb = false;
+    });
+  }
+
+  openBook(path){
+    GlobalKey key = GlobalKey();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => PDFScreen(
+            path: path,
+            title: widget.name,
+            currentPage: 10,
+            bookId: widget.book.id,
+            key: key,
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
       child: SizedBox(
-          child: InkWell(
-        child: Container(
-            padding: new EdgeInsets.only(top: 135.0, bottom: 10, right: 5.0, left: 5.0),
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: FileImage(widget.thumbnail),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: FutureBuilder(
-              builder: (context, exists) {
-                if (exists.connectionState == ConnectionState.done &&
-                    exists.data == null) {
-                  return RaisedButton.icon(
-                    onPressed: () {
-                      pdfFileDownload();
+          child: !boolLoadThumb ? InkWell(
+            child: Container(
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: FileImage(File(thumbPath)),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Align(
+                  alignment: Alignment(0.2, 0.8),
+                  child: FutureBuilder(
+                    builder: (context, exists) {
+                      if (exists.connectionState == ConnectionState.done &&
+                          exists.data == null) {
+                        return BookDownloader(pdfURL: widget.pdfURL, openBook: openBook);
+                        // return RaisedButton.icon(
+                        //   onPressed: () {
+                        //     pdfFileDownload();
+                        //   },
+                        //   icon: Icon(Icons.file_download, color: UtilColours.APP_BAR),
+                        //   label: Text("Download"),
+                        //   color: UtilColours.APP_BAR_NAV_BUTTON,
+                        // );
+                      }
+                      return Container();
                     },
-                    icon: Icon(Icons.file_download,
-                        color: UtilColours.APP_BAR),
-                    label: Text("Download"),
-                    color: UtilColours.APP_BAR_NAV_BUTTON,
-                  );
+                    future: doesUrlFileExits(context, widget.pdfURL),
+                  ),
+                )),
+            onTap: () {
+              doesUrlFileExits(context, widget.pdfURL).then((exists) {
+                if (exists != null && exists.path != null) {
+                  openBook(exists.path);
+                } else {
+                  bookInfoPopup(context);
                 }
-                return Container();
-              },
-              future: doesUrlFileExits(context, widget.pdfURL),
-            )),
-        onTap: () {
-          doesUrlFileExits(context, widget.pdfURL).then((exists) {
-            if (exists != null && exists.path != null) {
-              GlobalKey key = GlobalKey();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PDFScreen(
-                          path: exists.path,
-                          title: widget.name,
-                          currentPage: 10,
-                          bookId: widget.book.id,
-                          key: key,
-                        )),
-              );
-            } else {
-              bookInfoPopup(context);
-            }
-          });
-        },
-      )),
+              });
+            },
+          ) : displayLoading(size: 25.0) ),
     );
   }
 
@@ -265,7 +292,7 @@ class _BookListAdapterState extends State<BookListAdapter> {
                           height: MediaQuery.of(context).size.height * 0.22,
                           child: Align(
                             child: Image(
-                              image: FileImage(widget.thumbnail),
+                              image: FileImage(File(thumbPath)),
                             ),
                           ),
                         ),
@@ -284,7 +311,7 @@ class _BookListAdapterState extends State<BookListAdapter> {
                         height: 4.0,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 20.0, bottom: 20),
+                        padding: EdgeInsets.only(top: 10.0),
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
@@ -295,27 +322,27 @@ class _BookListAdapterState extends State<BookListAdapter> {
                               style: arabicTxtStyle(paramSize: 15)),
                         ),
                       ),
-                      InkWell(
-                        child: Container(
-                          padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                          decoration: BoxDecoration(
-                            color: UtilColours.SAVE_BUTTON,
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(20.0),
-                                bottomRight: Radius.circular(20.0)),
-                          ),
-                          child: Text(
-                            "Download شواطي",
-                            style: arabicTxtStyle(
-                                paramSize: 17, paramColour: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        onTap: () async {
-                          Navigator.of(context, rootNavigator: true).pop();
-                          pdfFileDownload();
-                        },
-                      ),
+                      // InkWell(
+                      //   child: Container(
+                      //     padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                      //     decoration: BoxDecoration(
+                      //       color: UtilColours.SAVE_BUTTON,
+                      //       borderRadius: BorderRadius.only(
+                      //           bottomLeft: Radius.circular(20.0),
+                      //           bottomRight: Radius.circular(20.0)),
+                      //     ),
+                      //     child: Text(
+                      //       "Download شواطي",
+                      //       style: arabicTxtStyle(
+                      //           paramSize: 17, paramColour: Colors.white),
+                      //       textAlign: TextAlign.center,
+                      //     ),
+                      //   ),
+                      //   onTap: () async {
+                      //     Navigator.of(context, rootNavigator: true).pop();
+                      //     pdfFileDownload();
+                      //   },
+                      // ),
                     ],
                   ),
                 )),
@@ -323,3 +350,132 @@ class _BookListAdapterState extends State<BookListAdapter> {
         });
   }
 }
+
+
+class BookDownloader extends StatefulWidget {
+  final String pdfURL;
+  Function openBook;
+
+  BookDownloader({Key key, this.pdfURL, this.openBook}) : super(key: key);
+
+  @override
+  _BookDownloaderState createState() => _BookDownloaderState();
+}
+
+class _BookDownloaderState extends State<BookDownloader> {
+
+  ButtonState downloadState = ButtonState.idle;
+  double percent = 0.0;
+  bool hideDownload = false;
+  String savedPath = '';
+  var dio = Dio();
+  CancelToken cancelToken = CancelToken();
+
+
+  @override
+  Widget build(BuildContext context) {
+    return hideDownload ? Container() :
+      ProgressButton.icon(iconedButtons: {
+      ButtonState.idle: IconedButton(
+          text: "Download",
+          icon: Icon(Icons.download_rounded ,color: Colors.white),
+          color: UtilColours.APP_BAR),
+      ButtonState.loading: IconedButton(
+          text: "Loading",
+          color: UtilColours.APP_BAR),
+      ButtonState.fail: IconedButton(
+          text: "Failed",
+          icon: Icon(Icons.cancel,color: Colors.white),
+          color: Colors.red.shade300),
+      ButtonState.success: IconedButton(
+          text: "Open",
+          icon: Icon(Icons.check_circle,color: Colors.white,),
+          color: Colors.green.shade400)
+    },
+        maxWidth: 180.0,
+        minWidth: 60.0,
+        height: 60.0,
+        progressIndicatorSize: 60.0,
+        percent: percent,
+        onPressed: () => processDownload(),
+        state: downloadState);
+  }
+
+  processDownload(){
+    switch (downloadState) {
+      case ButtonState.idle:
+        print('startDownload');
+        download2();
+        percent = 0.0;
+        downloadState = ButtonState.loading;
+        break;
+      case ButtonState.loading:
+        if(!cancelToken.isCancelled){
+          cancelToken.cancel();
+          print('cancel');
+        }
+        downloadState = ButtonState.idle;
+        percent = 0.0;
+        break;
+      case ButtonState.success:
+        widget.openBook(savedPath);
+        hideDownload = true;
+        break;
+      default:
+        break;
+    }
+    setState(() {});
+  }
+
+
+  Future download2() async {
+    // var url = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+    var url = widget.pdfURL;
+    print(url);
+    String dir = await getSystemPath();
+    savedPath = "$dir/" + widget.pdfURL.substring(widget.pdfURL.lastIndexOf("/") + 1);
+    cancelToken = new CancelToken();
+
+    // dio.options.headers['Host'] = 'abdullah-asad.com';
+    dio.options.headers['Accept-Encoding'] = 'identity;q=1, *;q=0';
+
+    try {
+      Response response = await dio.get(
+        url,
+        cancelToken: cancelToken,
+        onReceiveProgress: showDownloadProgress,
+        //Received data with List<int>
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 500;
+            }),
+      );
+      print(response.headers);
+      File file = File(savedPath);
+      var raf = file.openSync(mode: FileMode.write);
+      // response.data is List<int> type
+      raf.writeFromSync(response.data);
+      await raf.close();
+      setState(() {
+        downloadState = ButtonState.success;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void showDownloadProgress(received, total) {
+    if (total != -1) {
+      setState(() {
+        percent = received / total;
+      });
+    }
+  }
+
+}
+
+
+
+

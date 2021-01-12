@@ -60,12 +60,8 @@ class _LecturesState extends State<Lectures> {
   _createPlayList()async{
     if(_displayPlayer == true){
       for(final e in this.records){
-        String url = e.mp3URL;
-
-        if(hasArabicChar(e.mp3URL)){
-          url = Uri.encodeFull(url);
-        }
-        mp3List.add(AudioSource.uri(Uri.parse(url)));
+        Uri url = Uri.parse(encodeArabicURL(e.mp3URL));
+        mp3List.add(AudioSource.uri(url));
       }
     }
 

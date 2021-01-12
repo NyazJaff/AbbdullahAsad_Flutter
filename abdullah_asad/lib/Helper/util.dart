@@ -44,9 +44,18 @@ showToast(context, message){
   ));
 }
 
-bool hasArabicChar(val){
+String encodeArabicURL(url){
+  String encodedURL = url;
   final allArabicChar = RegExp('[\u0621-\u064A]+');
-  return allArabicChar.hasMatch(val);
+
+  if(allArabicChar.hasMatch(url)){
+    encodedURL = Uri.encodeFull(url);
+  }
+  return encodedURL;
+}
+
+getSystemPath() async {
+  return (await getApplicationDocumentsDirectory()).path;
 }
 
 Future<File> doesUrlFileExits(context, url) async{
