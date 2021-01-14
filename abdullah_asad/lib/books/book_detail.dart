@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:abdullah_asad/books/pdfscreen.dart';
 import 'package:abdullah_asad/Helper/util.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BookDetail extends StatefulWidget {
   final DocumentSnapshot post;
@@ -79,7 +80,7 @@ class _BookDetailState extends State<BookDetail> {
                   ),
                 ),
                 RaisedButton(
-                    child: Text("Open PDF"),
+                    child: Text("open_pdf".tr()),
                     onPressed: () {
                       if (this.pathPDF?.isEmpty == false) {
                         Navigator.push(

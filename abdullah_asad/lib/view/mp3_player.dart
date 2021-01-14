@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../Helper/util.dart';
 
 class Mp3Player extends StatefulWidget {
@@ -20,27 +20,7 @@ class Mp3Player extends StatefulWidget {
 
 class _Mp3PlayerState extends State<Mp3Player> {
   AudioPlayer _player;
-  ConcatenatingAudioSource _playlist = ConcatenatingAudioSource(children: [
-    AudioSource.uri(
-      Uri.parse(
-          "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3"),
-      tag: AudioMetadata(
-        album: "Science Friday",
-        title: "A Salute To Head-Scratching Science",
-        artwork:
-        "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-      ),
-    ),
-    AudioSource.uri(
-      Uri.parse("https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3"),
-      tag: AudioMetadata(
-        album: "Science Friday",
-        title: "From Cat Rheology To Operatic Incompetence",
-        artwork:
-        "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-      ),
-    ),
-  ]);
+  ConcatenatingAudioSource _playlist = ConcatenatingAudioSource(children: []);
 
   @override
   void initState() {
@@ -226,7 +206,7 @@ class ControlButtons extends StatelessWidget {
           onPressed: () {
             _showSliderDialog(
               context: context,
-              title: "Adjust volume",
+              title: "adjust_volume".tr(),
               divisions: 10,
               min: 0.0,
               max: 1.0,
@@ -293,7 +273,7 @@ class ControlButtons extends StatelessWidget {
             onPressed: () {
               _showSliderDialog(
                 context: context,
-                title: "Adjust speed",
+                title: 'adjust_speed'.tr(),
                 divisions: 10,
                 min: 0.5,
                 max: 1.5,

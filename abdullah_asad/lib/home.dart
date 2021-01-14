@@ -6,6 +6,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'Helper/db_helper.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyHomePage extends StatefulWidget {
 //  MyHomePage({Key key, this.title}) : super(key: key);
@@ -166,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          Lectures(title:'Question and Answer', parentId: 0, classType: DatabaseHelper.QUESTION_AND_ANSWER),),
+                                                          Lectures(title:'question_and_answer'.tr(), parentId: 0, classType: DatabaseHelper.QUESTION_AND_ANSWER),),
                                                   );
                                                 },
                                               )

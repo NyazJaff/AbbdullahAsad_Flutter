@@ -15,6 +15,7 @@ import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:abdullah_asad/utilities/progress_button/iconed_button.dart';
 import 'package:abdullah_asad/utilities/progress_button/progress_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ListBooks extends StatefulWidget {
   @override
@@ -71,7 +72,7 @@ class _ListBooksState extends State<ListBooks> {
     return Scaffold(
 //        extendBodyBehindAppBar: true,
 //        backgroundColor: Colors.red,
-        appBar: app_bar(context, "Books"),
+        appBar: app_bar(context, "books".tr()),
         body: Scaffold(
             body: Stack(children: <Widget>[
               appBgImage(),
@@ -176,10 +177,10 @@ class _BookListAdapterState extends State<BookListAdapter> {
   }
 
   pdfFileDownload() {
-    showToast(context, "Downloading!");
+    showToast(context, "downloading!".tr());
     createFileOfUrl(widget.pdfURL).then((f) {
       if (f.path != null) {
-        showToast(context, "File is downloaded. Ready to open!");
+        showToast(context, 'file_is_downloaded_ready_to_open'.tr());
         setState(() {});
       }
     });
@@ -377,18 +378,18 @@ class _BookDownloaderState extends State<BookDownloader> {
     return hideDownload ? Container() :
       ProgressButton.icon(iconedButtons: {
       ButtonState.idle: IconedButton(
-          text: "Download",
+          text: "download".tr(),
           icon: Icon(Icons.download_rounded ,color: Colors.white),
           color: UtilColours.APP_BAR),
       ButtonState.loading: IconedButton(
-          text: "Loading",
+          text: "loading".tr(),
           color: UtilColours.APP_BAR),
       ButtonState.fail: IconedButton(
-          text: "Failed",
+          text: "failed".tr(),
           icon: Icon(Icons.cancel,color: Colors.white),
           color: Colors.red.shade300),
       ButtonState.success: IconedButton(
-          text: "Open",
+          text: "open".tr(),
           icon: Icon(Icons.check_circle,color: Colors.white,),
           color: Colors.green.shade400)
     },

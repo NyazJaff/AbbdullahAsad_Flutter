@@ -1,7 +1,3 @@
-// Make this class reusable
-// Fade route
-// Language
-
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:abdullah_asad/models/epic.dart';
 import 'package:abdullah_asad/view/mp3_player.dart';

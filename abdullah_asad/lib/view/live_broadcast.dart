@@ -3,6 +3,7 @@ import 'package:abdullah_asad/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LiveBroadcast extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _LiveBroadcastState extends State<LiveBroadcast> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: app_bar(context, "Broadcast "),
+        appBar: app_bar(context, 'broadcast'.tr()),
         body: SafeArea(
           child: Container(
               child: Column(children: <Widget>[

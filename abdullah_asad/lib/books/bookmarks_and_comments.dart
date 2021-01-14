@@ -5,6 +5,8 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:abdullah_asad/models/comments_model.dart';
 import 'package:abdullah_asad/Helper/db_helper.dart';
 import 'package:abdullah_asad/utilities/chasing_dots.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 class BookmarksAndComments extends StatefulWidget{
   BookmarksAndComments({
     Key key,
@@ -127,7 +129,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                       ),
                     ),
                   );
-                }) : noRecordFound('No Bookmarks!');
+                }) : noRecordFound('no_bookmarks!');
           }
         });
   }
@@ -196,7 +198,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                       ),
                     ),
                   );
-                }) : noRecordFound('No Comments!');
+                }) : noRecordFound('no_comments');
           }
         });
   }
@@ -252,7 +254,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                     Tab(
                       child: Container(
                         child: Text(
-                          'Bookmark المرجعية',
+                          'bookmark'.tr(),
                           style: arabicTxtStyle(paramColour: Colors.white, paramSize: 18.0),
                         ),
                       ),
@@ -260,7 +262,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                     Tab(
                       child: Container(
                         child: Text(
-                          'Comment تعليق',
+                          'comment'.tr(),
                           style: arabicTxtStyle(paramColour: Colors.white, paramSize: 18.0),
                         ),
                       ),

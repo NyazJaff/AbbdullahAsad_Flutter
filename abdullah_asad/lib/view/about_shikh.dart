@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 class AbdoutShikh extends StatefulWidget {
   @override
   _AbdoutShikhState createState() => _AbdoutShikhState();
@@ -93,7 +93,7 @@ class _AbdoutShikhState extends State<AbdoutShikh> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: app_bar(context, "ترجمة الشيخ"),
+        appBar: app_bar(context, 'about_shikh'.tr()),
         body:Scaffold(
             body: Stack (
                 children: <Widget>[
@@ -122,7 +122,7 @@ class _AbdoutShikhState extends State<AbdoutShikh> {
         decoration: simpleDecorationStyle,
         child: Text(currentQuestion['title'],
             maxLines: 1,
-            textDirection: TextDirection.rtl,
+            // textDirection: TextDirection.rtl,
             style: arabicTxtStyle(paramBold: true),
             overflow: TextOverflow.ellipsis),
       ),
@@ -136,7 +136,7 @@ class _AbdoutShikhState extends State<AbdoutShikh> {
                     padding: EdgeInsets.all(10),
                     decoration: simpleDecorationStyle,
                     child: Text(currentQuestion['description'],
-                        textDirection: TextDirection.rtl,
+                        // textDirection: TextDirection.rtl,
                         style: arabicTxtStyle(paramSize: 20)),
                   )),
             ),

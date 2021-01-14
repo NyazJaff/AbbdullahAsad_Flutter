@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:abdullah_asad/Helper/util.dart';
 import 'package:flutter/services.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'chasing_dots.dart';
 
 final textAndIconColour =     Color(0xFF545756);

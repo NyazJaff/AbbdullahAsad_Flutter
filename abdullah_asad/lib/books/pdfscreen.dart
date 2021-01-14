@@ -9,6 +9,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:abdullah_asad/books/bookmarks_and_comments.dart';
 import 'package:abdullah_asad/utilities/layout_helper.dart';
 import 'package:share/share.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PDFScreen extends StatefulWidget {
   final String path;
@@ -170,7 +171,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                   });
 
                   Scaffold.of(cntx).showSnackBar(SnackBar(
-                    content: Text(pageBookmarked? "Bookmarked!" : "Removed Bookmark!"),
+                    content: Text(pageBookmarked? "bookmarked!".tr() : "removed_bookmark!".tr()),
                     duration: Duration(seconds: 1),
                   ));
 
@@ -259,7 +260,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              "Add comment to this page أضف تعليقك",
+                              'add_comment_to_this_page'.tr(),
                               style:arabicTxtStyle(),
                               textAlign: TextAlign.center,
                             ),
@@ -295,7 +296,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                                 bottomRight: Radius.circular(20.0)),
                           ),
                           child: Text(
-                            "Save حفظ",
+                            "save".tr(),
                             style: arabicTxtStyle(paramColour: Colors.white),
                             textAlign: TextAlign.center,
                           ),
@@ -310,7 +311,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                                 type: DatabaseHelper.COMMENT));
 
                             Scaffold.of(ctx).showSnackBar(SnackBar(
-                              content: Text('Saved! ' + commentTxt.text),
+                              content: Text('saved'.tr() + commentTxt.text),
                               duration: Duration(seconds: 2),
                             ));
                           }
