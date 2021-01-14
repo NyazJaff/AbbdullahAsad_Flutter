@@ -230,7 +230,7 @@ class _BookListAdapterState extends State<BookListAdapter> {
                   ),
                 ),
                 child: Align(
-                  alignment: Alignment(0.2, 0.8),
+                  alignment: Alignment(0.0, 0.8),
                   child: FutureBuilder(
                     builder: (context, exists) {
                       if (exists.connectionState == ConnectionState.done &&

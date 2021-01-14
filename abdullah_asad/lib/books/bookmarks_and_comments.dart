@@ -28,41 +28,20 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
   var db = new DatabaseHelper();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-
-
-//     db.getBookmarksOrComments(widget.bookId,DatabaseHelper.BOOKMARK).then((value) {
-//       bookmarks = value;
-//    });
-//    bookmarks.add(Bookmark(book: 2, page: 7));
-//    bookmarks.add(Bookmark(book: 5, page: 9));
-//    bookmarks.add(Bookmark(book: 6, page: 2));
-//    bookmarks.add(Bookmark(book: 8, page: 4));
-
-
-    comments = List();
-    comments.add(Comment(book: 2, page: 7, comment:  "هذا اختبار asdasdsad asdsad ent", bookName: "testess adas asdasd adas asdasdas هذا اختبار"));
-    comments.add(Comment(book: 2, page: 8, comment:  "هذا اختبار Test Comment 2", bookName: "testesteste 1 هذا اختبار"));
-    comments.add(Comment(book: 2, page: 9, comment:  "Test Comment 3 هذا اختبار", bookName: "test sdsad1 هذا اختبار"));
   }
 
-  removeBookmark(index, pageIndex, type){
-    db.deleteCommentOrBookmark(widget.bookId ,pageIndex, type).then((value) {
-      setState(() {
-//        bookmarks.removeAt(index);
-      });
+  removeBookmark(id, index, pageIndex, type){
+    db.deleteCommentOrBookmarkById(id).then((value) {
     });
-
+    setState(() {});
   }
 
-  removeComment(index, pageIndex, type){
-    db.deleteCommentOrBookmark(widget.bookId, pageIndex, type);
-    setState(() {
-      comments.removeAt(index);
-    });
+  removeComment(id, index, pageIndex, type){
+    db.deleteCommentOrBookmarkById(id);
+    setState(() {});
   }
-
 
   bookmarkDeleteBG(){
     return Container(
@@ -123,14 +102,14 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                 )
             );
           } else {
-            return ListView.builder(
+            return bookmarks.data.length > 0 ? ListView.builder(
                 itemCount: bookmarks.data.length,
                 itemBuilder: (BuildContext context, int index){
                   var bookmark = bookmarks.data[index];
                   return Dismissible(
                     key: UniqueKey(),
                     onDismissed: (direction){
-                      removeBookmark(index, bookmark.pageIndex, DatabaseHelper.BOOKMARK );
+                      removeBookmark(bookmark.id, index, bookmark.pageIndex, DatabaseHelper.BOOKMARK );
                     },
                     background: bookmarkDeleteBG(),
 //            secondaryBackground: bookmarkDeleteBG(),
@@ -139,7 +118,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                           title: Text((bookmark.pageIndex + 1).toString(), style: arabicTxtStyle(),),
                           leading: new Icon(Icons.bookmark, color: UtilColours.APP_BAR,),
                           trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){
-                            removeBookmark(index, bookmark.pageIndex, DatabaseHelper.BOOKMARK );
+                            removeBookmark(bookmark.id, index, bookmark.pageIndex, DatabaseHelper.BOOKMARK );
                           }),
                           onTap: () {
                             widget.pdfViewController.setPage(bookmark.pageIndex);
@@ -148,9 +127,21 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                       ),
                     ),
                   );
-                });
+                }) : noRecordFound('No Bookmarks!');
           }
         });
+  }
+
+  Widget noRecordFound(message){
+    return Container(
+        child: Center(
+            child: Text(
+              message,
+              style:arabicTxtStyle(),
+              textAlign: TextAlign.center,
+            )
+        )
+    );
   }
 
   Widget commentList(){
@@ -165,14 +156,14 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                 )
             );
           } else {
-            return  ListView.builder(
+            return comments.data.length > 0 ? ListView.builder(
                 itemCount: comments.data.length,
                 itemBuilder: (BuildContext context, int index){
                   var comment = comments.data[index];
                   return Dismissible(
                     key: UniqueKey(),
                     onDismissed: (direction){
-                      removeComment(index, comment.pageIndex, DatabaseHelper.COMMENT);
+                      removeComment(comment.id, index, comment.pageIndex, DatabaseHelper.COMMENT);
                     },
                     background: bookmarkDeleteBG(),
 //            secondaryBackground: bookmarkDeleteBG(),
@@ -196,7 +187,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                             ),),
 
                           trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){
-                            removeComment(index,comment.pageIndex, DatabaseHelper.COMMENT );
+                            removeComment(comment.id, index,comment.pageIndex, DatabaseHelper.COMMENT );
                           }),
                           onTap: () {
                             widget.pdfViewController.setPage(comment.pageIndex);
@@ -205,7 +196,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                       ),
                     ),
                   );
-                });
+                }) : noRecordFound('No Comments!');
           }
         });
   }

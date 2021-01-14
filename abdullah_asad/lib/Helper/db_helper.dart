@@ -236,6 +236,16 @@ class DatabaseHelper {
     }
   }
 
+  Future<bool> deleteCommentOrBookmarkById(int id) async{
+    var dbClient = await db;
+    var deleted = false;
+
+    dbClient.rawDelete('DELETE FROM CommentAndBookmark where id=?', [id]).then((value) {
+      deleted = true;
+    });
+    return deleted;
+  }
+
 //  updatePageBookmarkStatus(int bookId, int pageIndex, status )
   Future<bool> deleteCommentOrBookmark(int bookId, int pageIndex, String type) async{
     var dbClient = await db;

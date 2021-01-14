@@ -37,6 +37,12 @@ bool utilIsAndroid(context){
   return isAndroid;
 }
 
+getCurrentOrientation(){
+  final orientation = WidgetsBinding.instance.window.physicalSize
+      .aspectRatio > 1 ? Orientation.landscape : Orientation.portrait;
+  return orientation;
+}
+
 showToast(context, message){
   Scaffold.of(context).showSnackBar(SnackBar(
     content: Text(message),

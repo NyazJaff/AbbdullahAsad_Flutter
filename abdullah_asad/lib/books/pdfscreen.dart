@@ -22,8 +22,7 @@ class PDFScreen extends StatefulWidget {
 }
 
 class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
-  final Completer<PDFViewController> _controller =
-  Completer<PDFViewController>();
+  Completer<PDFViewController> _controller = Completer<PDFViewController>();
   int pages = 0;
   bool isReady = false;
   String errorMessage = '';
@@ -34,31 +33,51 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
 
   final _formKey = GlobalKey<FormState>();
   var isKeyboardOpen = false;
+  Orientation currentOrientation = null;
 
   @override
   void initState() {
-
     print(widget.path);
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this); //used for keyboard detection
-  }
+    this.currentOrientation = getCurrentOrientation();
 
+    // WidgetsBinding.instance.addPostFrameCallback((_){
+    // });
+
+  }
 
   @override
   void didChangeMetrics() {
-    if(utilIsAndroid(context)){
-      final value = MediaQuery.of(context).viewInsets.bottom;
-      if (value > 0) {
-        if (isKeyboardOpen) {
-          _onKeyboardChanged(false);
-        }
-        isKeyboardOpen = false;
-      } else {
-        isKeyboardOpen = true;
-//        _onKeyboardChanged(true);
+
+    // if(!utilIsAndroid(context)){
+    //   setState(() {
+    //     _controller = new Completer<PDFViewController>();
+    //   });
+    // }
+    if(utilIsAndroid(context)) {
+      if (this.currentOrientation != getCurrentOrientation()) {
+        refreshWindow();
+        // setState(() {
+        //   this.currentOrientation = getCurrentOrientation();
+        //   _controller = new Completer<PDFViewController>();
+        // });
       }
     }
+//     if(utilIsAndroid(context)){
+//       final value = MediaQuery.of(context).viewInsets.bottom;
+//       print(value);
+//       if (value > 0) {
+//         if (isKeyboardOpen) {
+//           // _onKeyboardChanged(false);
+//         }
+//         isKeyboardOpen = false;
+//       } else {
+//         isKeyboardOpen = true;
+// //        _onKeyboardChanged(true);
+//       }
+//     }
 
   }
 
@@ -74,6 +93,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: app_bar(context, widget.title),
       body: Stack(
         children: <Widget>[
@@ -131,7 +151,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 IconButton(icon: Icon(Icons.share), onPressed: () {
-                  Share.shareFiles([widget.path, ], text: widget.title, subject: widget.title, );
+                  Share.shareFiles([widget.path], text: widget.title, subject: widget.title);
                 }),
                 IconButton(icon: pageBookmarked ? Icon(Icons.bookmark) :Icon(Icons.bookmark_border) , onPressed: () async{
                   if(!pageBookmarked){
@@ -212,7 +232,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              PDFScreen(path: widget.path, title: widget.title, currentPage: current_page_param, key: key,)),
+              PDFScreen(bookId: widget.bookId, path: widget.path, title: widget.title, currentPage: current_page_param, key: key,)),
     );
   }
 
@@ -258,7 +278,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                         child: TextField(
                           controller: commentTxt,
                           decoration: InputDecoration(
-                            hintText: "كان بشرية الأمريكي ٣٠, به،",
+                            hintText: "",
                             border: InputBorder.none,
 
                           ),
@@ -294,9 +314,9 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                               duration: Duration(seconds: 2),
                             ));
                           }
-                          await Future.delayed(const Duration(seconds: 2), (){
+                          // await Future.delayed(const Duration(seconds: 2), (){
                             Navigator.of(context, rootNavigator: true).pop(commentTxt.text);
-                          });
+                          // });
 
                         },
                       ),
