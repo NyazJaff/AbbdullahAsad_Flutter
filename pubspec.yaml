@@ -1,0 +1,61 @@
+name: AbdullahAsadF
+description: A new Flutter project.
+
+publish_to: 'none' # prevents package being published to pub.dev using `pub publish`
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  firebase_core: ^0.5.3
+  cloud_firestore:      "0.14.4"
+  flutter_pdfview:      "^1.0.4"
+  just_audio:           "^0.6.4"
+  share:                "^0.6.5+4" # Share files with others
+  flutter_inappwebview: "^4.0.0+4" # Open webpage for live stream
+  url_launcher:         "^5.4.11"
+  easy_localization:    "^2.3.2"
+  percent_indicator: "^2.1.7+2"
+  font_awesome_flutter: ^8.5.0
+  dio: "^3.0.10"
+  flutter_staggered_animations: "^0.1.2" # Display grid with animation
+  path_provider:
+  sqflite:
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_name: "^0.0.1"
+  flutter_launcher_icons: "^0.8.1"
+
+flutter_icons:
+  image_path: 'assets/brand/logo512_white_bg.png'
+  android: true
+  ios: true
+
+flutter_launcher_name:
+  name: "المحدث عبدالله السعد"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/brand/
+    - assets/langs/
+
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/tajawal/Tajawal-Black.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Bold.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Medium.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Regular.ttf
