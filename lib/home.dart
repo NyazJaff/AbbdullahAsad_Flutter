@@ -212,8 +212,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           child: FlatButton(
             padding: EdgeInsets.all(0.0),
-            onPressed: () {
-              debugPrint('button clicked');
+            onPressed: () async {
+              await InAppBrowser.openWithSystemBrowser(
+                  url: "http://nyazjaff.co.uk");
             },
             child: null,
           ),

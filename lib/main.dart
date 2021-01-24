@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var locale = EasyLocalization.of(context).locale;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       //Route
       initialRoute: '/',
       routes: {

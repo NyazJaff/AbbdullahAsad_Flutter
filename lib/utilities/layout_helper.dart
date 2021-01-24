@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:AbdullahAsadF/Helper/util.dart';
 import 'package:flutter/services.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'chasing_dots.dart';
+import 'dart:math' as math;
 
 final textAndIconColour =     Color(0xFF545756);
 final textAndIconHintColour = Color(0xFF969998);
@@ -21,6 +21,14 @@ TextStyle arabicTxtStyle({paramColour: UtilColours.APP_BAR, double paramSize: 20
       fontStyle: FontStyle.normal,
       letterSpacing: 2,
       height: 1.5
+  );
+}
+
+Widget withRTL(widget){
+  return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.rotationY(math.pi),
+      child: widget
   );
 }
 
