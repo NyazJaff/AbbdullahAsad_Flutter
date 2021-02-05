@@ -8,6 +8,7 @@ import 'package:AbdullahAsadF/utilities/layout_helper.dart';
 import 'package:AbdullahAsadF/utilities/chasing_dots.dart';
 import 'package:just_audio/just_audio.dart';
 import '../Helper/db_helper.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Lectures extends StatefulWidget {
   Lectures({
@@ -216,7 +217,7 @@ class _LecturesState extends State<Lectures> {
                       : Container(
                       child: Center(
                           child: Text(
-                            "No records currently added!",
+                            "no_records_currently_added!".tr(),
                             style:arabicTxtStyle(),
                             textAlign: TextAlign.center,
                           )

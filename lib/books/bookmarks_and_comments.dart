@@ -129,7 +129,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                       ),
                     ),
                   );
-                }) : noRecordFound('no_bookmarks!');
+                }) : noRecordFound('no_bookmarks!'.tr());
           }
         });
   }
@@ -198,7 +198,7 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                       ),
                     ),
                   );
-                }) : noRecordFound('no_comments');
+                }) : noRecordFound('no_comments'.tr());
           }
         });
   }
