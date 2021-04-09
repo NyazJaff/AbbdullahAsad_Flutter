@@ -23,7 +23,7 @@ dependencies:
   percent_indicator: "^2.1.7+2"
   font_awesome_flutter: ^8.5.0
   dio: "^3.0.10"
-  flutter_staggered_animations: "^0.1.2" # Display grid with animation
+  flutter_staggered_animations: "^1.0.0" # Display grid with animation
   path_provider:
   sqflite:
 
